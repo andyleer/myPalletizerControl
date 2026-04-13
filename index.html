@@ -209,7 +209,10 @@ var CMD = { POWER_ON: 0x10, IS_CTRL_CONN: 0x12, RELEASE_ALL: 0x13, GET_ANGLES: 0
 
 function buildFrame(cmd, data) {
   data = data || [];
-  return new Uint8Array([HDR, HDR, data.length + 2, cmd].concat(data).concat([END]));
+  var arr = [HDR, HDR, data.length + 2, cmd];
+  for (var i = 0; i < data.length; i++) arr.push(data[i]);
+  arr.push(END);
+  return new Uint8Array(arr);
 }
 
 function degToBytes(deg) {
