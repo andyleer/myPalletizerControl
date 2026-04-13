@@ -449,6 +449,9 @@ function doSave() {
 function recallLocation(i) {
   var loc = saved[i];
   if (!loc) { log('location not found', 'err'); return; }
+  if (!writer) { log('not connected — cannot recall "' + loc.name + '"', 'err'); return; }
+
+  // update UI
   JOINTS.forEach(function(j, k) {
     var clamped = Math.max(j.min, Math.min(j.max, loc.angles[k]));
     document.getElementById('js'+k).value = clamped;
@@ -456,11 +459,12 @@ function recallLocation(i) {
   });
   document.getElementById('speedSlider').value = loc.speed;
   document.getElementById('speedNum').textContent = loc.speed;
-  var data = [];
-  loc.angles.forEach(function(a) { var b = degToBytes(a); data.push(b[0], b[1]); });
-  data.push(Math.max(1, Math.min(100, Math.round(Number(loc.speed)))));
-  sendFrame(buildFrame(CMD.SEND_ANGLES, data));
-  log('recalling "' + loc.name + '"', 'sys');
+
+  // build frame using the same path as doSendAngles
+  var spd = Math.max(1, Math.min(100, Math.round(Number(loc.speed))));
+  var frame = buildSendAngles(loc.angles, spd);
+  log('recalling "' + loc.name + '" → ' + loc.angles.map(function(a,k){ return JOINTS[k].name+'='+parseFloat(a).toFixed(1)+'°'; }).join(' '), 'sys');
+  sendFrame(frame);
 }
 
 function deleteLocation(i) {
