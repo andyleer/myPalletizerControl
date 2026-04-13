@@ -158,7 +158,7 @@ input[type="range"]::-moz-range-thumb {
 <div class="shell">
 
   <header>
-    <div class="title">myPalletizer <span>260</span></div>
+    <div class="title">myPalletizer <span>260</span> <span style="font-size:10px;font-weight:400;color:var(--muted);margin-left:8px">v1.11</span></div>
     <div class="status"><div class="dot" id="dot"></div><span id="connLabel">disconnected</span></div>
   </header>
 
@@ -250,14 +250,14 @@ var JOINTS = [
 var HDR = 0xFE, TAIL = 0xFA;
 var CMD = {
   POWER_ON:     0x10,
-  RELEASE:      0x13,
-  GET_ANGLES:   0x20,
-  SEND_ANGLES:  0x22,
-  PING:         0x12,
+  RELEASE:        0x13,
+  GET_ANGLES:     0x20,
+  SEND_ANGLES:    0x22,
+  SET_FRESH_MODE: 0x2c,
+  PING:           0x12,
 };
 
 function mkFrame(cmd, data) {
-  // len = 1 (cmd) + data.length + 1 (tail)
   var out = [HDR, HDR, data.length + 2, cmd];
   for (var i = 0; i < data.length; i++) out.push(data[i] & 0xFF);
   out.push(TAIL);
@@ -266,7 +266,7 @@ function mkFrame(cmd, data) {
 
 function degToBytes(deg) {
   var v = Math.round(parseFloat(deg) * 100);
-  if (v < 0) v = v + 65536;          // two's complement unsigned
+  if (v < 0) v = v + 65536;
   return [(v >> 8) & 0xFF, v & 0xFF];
 }
 
@@ -285,6 +285,13 @@ function mkSendAngles(angles, speed) {
   }
   data.push(Math.min(100, Math.max(1, Math.round(Number(speed)))));
   return mkFrame(CMD.SEND_ANGLES, data);
+}
+
+// send set_fresh_mode(0) then the angles frame with a small gap
+async function txAngles(angles, speed) {
+  await tx(mkFrame(CMD.SET_FRESH_MODE, [0]));
+  await new Promise(function(r){ setTimeout(r, 50); });
+  await tx(mkSendAngles(angles, speed));
 }
 
 // ─────────────────────────────────────────
@@ -388,7 +395,8 @@ function doRelease()   { tx(mkFrame(CMD.RELEASE, [])); }
 function doSend() {
   var spd = parseInt(document.getElementById('speedSlider').value);
   var angles = JOINTS.map(function(_, i) { return parseFloat(document.getElementById('jn' + i).value) || 0; });
-  tx(mkSendAngles(angles, spd));
+  log('sending: J1=' + angles[0] + '° J2=' + angles[1] + '° J3=' + angles[2] + '° J4=' + angles[3] + '°', 'sys');
+  txAngles(angles, spd);
 }
 
 function doHome() {
@@ -397,7 +405,8 @@ function doHome() {
     document.getElementById('js' + i).value = Math.max(j.min, Math.min(j.max, j.home));
     document.getElementById('jn' + i).value = j.home;
   });
-  tx(mkSendAngles(angles, 30));
+  log('homing: J1=' + angles[0] + '° J2=' + angles[1] + '° J3=' + angles[2] + '° J4=' + angles[3] + '°', 'sys');
+  txAngles(angles, 30);
 }
 
 // ─────────────────────────────────────────
@@ -506,7 +515,7 @@ function recall(i) {
   document.getElementById('speedSlider').value = loc.speed;
   document.getElementById('speedNum').textContent = loc.speed;
   log('recalling "' + loc.name + '"', 'sys');
-  tx(mkSendAngles(loc.angles, loc.speed));
+  txAngles(loc.angles, loc.speed);
 }
 
 renderSaved();
