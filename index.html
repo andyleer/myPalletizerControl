@@ -1,337 +1,566 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>myPalletizer 260</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>myPalletizer 260</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    /* ── reset ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-:root {
-  --bg: #f7f6f3;
-  --white: #ffffff;
-  --border: #e0ddd8;
-  --border-mid: #ccc9c2;
-  --text: #1a1a1a;
-  --muted: #999;
-  --accent: #1a6b3c;
-  --accent-bg: #edf5f0;
-  --danger: #c0392b;
-  --mono: 'IBM Plex Mono', monospace;
-}
+    /* ── tokens ── */
+    :root {
+      --bg:         #f7f6f3;
+      --white:      #ffffff;
+      --border:     #e0ddd8;
+      --border-mid: #ccc9c2;
+      --text:       #1a1a1a;
+      --muted:      #999999;
+      --accent:     #1a6b3c;
+      --accent-hov: #155732;
+      --danger:     #c0392b;
+      --warn-bg:    #fffbea;
+      --warn-bd:    #d4a017;
+      --warn-text:  #7a5800;
+      --mono: 'IBM Plex Mono', 'Courier New', monospace;
+    }
 
-html, body {
-  min-height: 100%;
-  background: var(--bg);
-  color: var(--text);
-  font-family: var(--mono);
-  font-size: 13px;
-  -webkit-font-smoothing: antialiased;
-}
+    /* ── base ── */
+    html, body {
+      min-height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--mono);
+      font-size: 13px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
 
-.page {
-  max-width: 640px;
-  margin: 0 auto;
-  padding: 48px 24px 64px;
-}
+    /* ── layout ── */
+    .page {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
 
-/* header */
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  margin-bottom: 40px;
-}
-.title { font-size: 15px; font-weight: 500; letter-spacing: -.01em; }
-.title span { color: var(--accent); }
-.status {
-  display: flex; align-items: center; gap: 7px;
-  font-size: 11px; color: var(--muted);
-}
-.dot {
-  width: 6px; height: 6px; border-radius: 50%;
-  background: var(--border-mid);
-  transition: background .3s;
-}
-.dot.live { background: var(--accent); }
+    /* ── header ── */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 40px;
+    }
+    .title { font-size: 15px; font-weight: 500; letter-spacing: -0.01em; }
+    .title span { color: var(--accent); }
 
-/* sections */
-.section { margin-bottom: 36px; }
-.label {
-  font-size: 10px;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin-bottom: 14px;
-}
+    .conn-status { display: flex; align-items: center; gap: 7px; font-size: 11px; color: var(--muted); }
+    .dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--border-mid);
+      transition: background 0.3s;
+    }
+    .dot.live { background: var(--accent); }
 
-/* connect */
-.row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+    /* ── section ── */
+    .section { margin-bottom: 32px; }
+    .label {
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
 
-/* base controls */
-select, input[type="text"], input[type="number"] {
-  height: 34px;
-  border: 1px solid var(--border);
-  border-radius: 3px;
-  background: var(--white);
-  color: var(--text);
-  font-family: var(--mono);
-  font-size: 12px;
-  padding: 0 10px;
-  outline: none;
-  transition: border-color .15s;
-  -webkit-appearance: none;
-}
-select:focus, input:focus { border-color: var(--accent); }
-select {
-  cursor: pointer;
-  padding-right: 26px;
-  background-image: url("data:image/svg+xml,%3Csvg width='9' height='5' viewBox='0 0 9 5' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l3.5 3L8 1' stroke='%23999' stroke-width='1.2' fill='none'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 9px center;
-  background-color: var(--white);
-}
+    hr { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
 
-button {
-  height: 34px; padding: 0 14px;
-  border: 1px solid var(--border);
-  border-radius: 3px;
-  background: var(--white);
-  color: var(--text);
-  font-family: var(--mono);
-  font-size: 12px;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: border-color .15s, background .15s;
-}
-button:hover { border-color: var(--border-mid); background: var(--bg); }
-button:active { transform: scale(0.98); }
-button:disabled { opacity: .3; cursor: not-allowed; transform: none; }
+    /* ── form elements ── */
+    select,
+    input[type="text"],
+    input[type="number"] {
+      height: 34px;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      background: var(--white);
+      color: var(--text);
+      font-family: var(--mono);
+      font-size: 12px;
+      padding: 0 10px;
+      outline: none;
+      transition: border-color 0.15s;
+      -webkit-appearance: none;
+    }
+    select:focus, input:focus { border-color: var(--accent); }
+    select {
+      cursor: pointer;
+      padding-right: 26px;
+      background-image: url("data:image/svg+xml,%3Csvg width='9' height='5' viewBox='0 0 9 5' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l3.5 3L8 1' stroke='%23999' stroke-width='1.2' fill='none'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 9px center;
+      background-color: var(--white);
+    }
 
-button.primary {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: #fff;
-}
-button.primary:hover { background: #155732; border-color: #155732; }
+    /* ── buttons ── */
+    button {
+      height: 34px;
+      padding: 0 14px;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      background: var(--white);
+      color: var(--text);
+      font-family: var(--mono);
+      font-size: 12px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    button:hover   { border-color: var(--border-mid); background: var(--bg); }
+    button:active  { transform: scale(0.98); }
+    button:disabled { opacity: 0.3; cursor: not-allowed; transform: none; }
 
-button.ghost {
-  background: transparent;
-  border-color: transparent;
-  color: var(--muted);
-  padding: 0 8px;
-}
-button.ghost:hover { color: var(--text); background: transparent; border-color: transparent; }
+    button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+    button.primary:hover { background: var(--accent-hov); border-color: var(--accent-hov); }
 
-/* joints */
-.joints { display: flex; flex-direction: column; gap: 12px; }
+    button.ghost { background: transparent; border-color: transparent; color: var(--muted); padding: 0 8px; }
+    button.ghost:hover { color: var(--text); background: transparent; border-color: transparent; }
 
-.joint {
-  display: grid;
-  grid-template-columns: 28px 1fr 80px;
-  gap: 12px;
-  align-items: center;
-}
-.jname { font-size: 11px; color: var(--muted); font-weight: 500; }
+    button.warn { background: var(--warn-bg); border-color: var(--warn-bd); color: var(--warn-text); }
+    button.warn:hover { background: #fff3c4; }
 
-input[type="range"] {
-  -webkit-appearance: none; appearance: none;
-  height: 1px; background: var(--border-mid);
-  border: none; padding: 0; outline: none;
-  cursor: pointer; width: 100%;
-}
-input[type="range"]::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  width: 16px; height: 16px;
-  border-radius: 50%;
-  background: var(--white);
-  border: 1.5px solid var(--accent);
-  cursor: pointer;
-  transition: transform .1s;
-}
-input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.15); }
-input[type="range"]::-moz-range-thumb {
-  width: 16px; height: 16px; border-radius: 50%;
-  background: var(--white); border: 1.5px solid var(--accent);
-}
+    /* ── flex row ── */
+    .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
 
-.jval {
-  display: flex; align-items: center; gap: 4px;
-  justify-content: flex-end;
-}
-.jval input[type="number"] {
-  width: 60px; text-align: right; padding: 0 6px; height: 30px;
-}
-.jdeg { font-size: 11px; color: var(--muted); }
+    /* ── range slider ── */
+    input[type="range"] {
+      -webkit-appearance: none;
+      appearance: none;
+      height: 1px;
+      background: var(--border-mid);
+      border: none;
+      padding: 0;
+      outline: none;
+      cursor: pointer;
+      width: 100%;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      background: var(--white);
+      border: 1.5px solid var(--accent);
+      cursor: pointer;
+      transition: transform 0.1s;
+    }
+    input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.15); }
+    input[type="range"]::-moz-range-thumb {
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      background: var(--white);
+      border: 1.5px solid var(--accent);
+    }
 
-/* speed */
-.speed-row {
-  display: grid;
-  grid-template-columns: 1fr 40px;
-  gap: 12px;
-  align-items: center;
-}
-.speed-num { font-size: 12px; text-align: right; }
+    /* ── joints ── */
+    .joints { display: flex; flex-direction: column; gap: 14px; }
+    .joint {
+      display: grid;
+      grid-template-columns: 28px 1fr 86px;
+      gap: 12px;
+      align-items: center;
+    }
+    .jname { font-size: 11px; font-weight: 500; color: var(--muted); }
+    .jval  { display: flex; align-items: center; gap: 4px; justify-content: flex-end; }
+    .jval input[type="number"] { width: 62px; text-align: right; padding: 0 6px; height: 30px; }
+    .jdeg  { font-size: 11px; color: var(--muted); }
 
-/* divider */
-hr { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
+    /* ── speed ── */
+    .speed-row { display: grid; grid-template-columns: 1fr 36px; gap: 12px; align-items: center; }
+    .speed-num { font-size: 12px; text-align: right; }
 
-/* saved locations */
-.saved-list { display: flex; flex-direction: column; gap: 6px; }
+    /* ── saved locations ── */
+    .saved-list { display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px; }
+    .saved-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 12px;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      transition: border-color 0.15s;
+    }
+    .saved-item:hover { border-color: var(--border-mid); }
+    .saved-name   { flex: 0 0 auto; min-width: 80px; font-size: 12px; }
+    .saved-angles { flex: 1; font-size: 11px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .saved-spd    { flex: 0 0 auto; font-size: 11px; color: var(--muted); min-width: 44px; text-align: right; }
+    .empty        { font-size: 12px; color: var(--muted); padding: 4px 0; }
 
-.saved-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 12px;
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: 3px;
-  transition: border-color .15s;
-}
-.saved-item:hover { border-color: var(--border-mid); }
-.saved-name { flex: 1; font-size: 12px; }
-.saved-angles { font-size: 11px; color: var(--muted); flex: 2; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .save-row { display: flex; gap: 8px; }
+    .save-row input[type="text"] { flex: 1; }
 
-.save-row { display: flex; gap: 8px; margin-top: 10px; }
-.save-row input[type="text"] { flex: 1; }
+    /* ── terminal ── */
+    .term {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 10px 12px;
+      height: 200px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) transparent;
+    }
+    .term::-webkit-scrollbar { width: 4px; }
+    .term::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 
-/* terminal */
-.term {
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: 3px;
-  padding: 10px 12px;
-  height: 160px;
-  overflow-y: auto;
-  display: flex; flex-direction: column; gap: 1px;
-  scrollbar-width: thin;
-  scrollbar-color: var(--border) transparent;
-}
-.term-line { display: flex; gap: 10px; font-size: 11px; line-height: 1.8; }
-.term-time { color: var(--muted); flex-shrink: 0; }
-.tx .term-text { color: var(--accent); }
-.rx .term-text { color: var(--text); }
-.err .term-text { color: var(--danger); }
-.sys .term-text { color: var(--muted); }
-
-.raw-row { display: flex; gap: 8px; margin-top: 10px; }
-.raw-row input { flex: 1; }
-
-/* empty state */
-.empty { font-size: 12px; color: var(--muted); padding: 6px 0; }
-</style>
+    .term-line { display: flex; gap: 10px; font-size: 11px; line-height: 1.8; }
+    .term-time  { color: var(--muted); flex-shrink: 0; min-width: 64px; }
+    .term-text  { word-break: break-all; }
+    .tx   .term-text { color: var(--accent); }
+    .rx   .term-text { color: var(--text); }
+    .info .term-text { color: var(--accent); font-weight: 500; }
+    .err  .term-text { color: var(--danger); }
+    .sys  .term-text { color: var(--muted); }
+  </style>
 </head>
 <body>
 <div class="page">
 
+  <!-- ── header ── -->
   <header>
     <div class="title">myPalletizer <span>260</span></div>
-    <div class="status">
+    <div class="conn-status">
       <div class="dot" id="dot"></div>
       <span id="connLabel">disconnected</span>
     </div>
   </header>
 
-  <!-- connect -->
+  <!-- ── 1. connection ── -->
   <div class="section">
     <div class="label">Connection</div>
     <div class="row">
       <select id="baudSelect">
-        <option value="115200" selected>115200 baud</option>
-        <option value="57600">57600 baud</option>
-        <option value="9600">9600 baud</option>
+        <option value="115200" selected>115200 baud (M5)</option>
+        <option value="1000000">1000000 baud (Pi)</option>
       </select>
-      <button class="primary" id="connectBtn" onclick="connectSerial()">Connect</button>
-      <button id="disconnectBtn" onclick="disconnectSerial()" disabled>Disconnect</button>
+      <button class="primary" id="connectBtn"    onclick="connectSerial()">Connect</button>
+      <button              id="disconnectBtn" onclick="disconnectSerial()" disabled>Disconnect</button>
     </div>
   </div>
 
-  <hr>
+  <hr />
 
-  <!-- joints -->
+  <!-- ── 2. test / verify ── -->
   <div class="section">
-    <div class="label">Joints</div>
+    <div class="label">Test</div>
+    <div class="row">
+      <button class="warn" onclick="cmdPing()">Ping robot</button>
+      <button class="warn" onclick="cmdGetAngles()">Read angles</button>
+      <button class="warn" onclick="cmdPowerOn()">Power on</button>
+    </div>
+    <p style="margin-top:10px; font-size:11px; color:var(--muted);">
+      Start here. Ping should return a response in the terminal within a second.
+    </p>
+  </div>
+
+  <hr />
+
+  <!-- ── 3. joints ── -->
+  <div class="section">
+    <div class="label">Joint angles</div>
     <div class="joints" id="jointGrid"></div>
 
-    <div style="margin-top:18px">
-      <div class="label" style="margin-bottom:10px">Speed</div>
+    <div style="margin-top: 20px;">
+      <div class="label" style="margin-bottom: 10px;">Speed (1 – 100)</div>
       <div class="speed-row">
-        <input type="range" id="speedSlider" min="1" max="100" value="50"
-          oninput="document.getElementById('speedNum').textContent=this.value">
-        <div class="speed-num" id="speedNum">50</div>
+        <input type="range" id="speedSlider" min="1" max="100" value="30"
+               oninput="document.getElementById('speedNum').textContent = this.value" />
+        <div class="speed-num" id="speedNum">30</div>
       </div>
     </div>
 
-    <div class="row" style="margin-top:18px">
-      <button class="primary" onclick="sendAngles()">Send</button>
-      <button onclick="goHome()">Home</button>
-      <button onclick="sendCmd('get_angles()')">Read angles</button>
-      <button onclick="sendCmd('release_all_servos()')">Release</button>
+    <div class="row" style="margin-top: 18px;">
+      <button class="primary" onclick="cmdSendAngles()">Send angles</button>
+      <button onclick="cmdHome()">Home</button>
+      <button onclick="cmdGetAngles()">Read angles</button>
+      <button onclick="cmdRelease()">Release servos</button>
     </div>
   </div>
 
-  <hr>
+  <hr />
 
-  <!-- saved locations -->
+  <!-- ── 4. saved locations ── -->
   <div class="section">
     <div class="label">Saved locations</div>
     <div class="saved-list" id="savedList"></div>
     <div class="save-row">
-      <input type="text" id="saveName" placeholder="location name" onkeydown="if(event.key==='Enter')saveLocation()">
+      <input type="text" id="saveName" placeholder="location name"
+             onkeydown="if (event.key === 'Enter') saveLocation()" />
       <button onclick="saveLocation()">Save current</button>
     </div>
   </div>
 
-  <hr>
+  <hr />
 
-  <!-- terminal -->
+  <!-- ── 5. terminal ── -->
   <div class="section">
-    <div class="label">Terminal</div>
+    <div class="label">
+      Terminal
+      <span style="letter-spacing:0; text-transform:none; font-size:10px; color:var(--muted);">— hex frames</span>
+    </div>
     <div class="term" id="terminal"></div>
-    <div class="raw-row">
-      <input type="text" id="rawCmd" placeholder="raw command"
-        onkeydown="if(event.key==='Enter')sendRaw()">
-      <button onclick="sendRaw()">Send</button>
+    <div class="row" style="margin-top: 8px;">
       <button class="ghost" onclick="clearLog()">Clear</button>
     </div>
   </div>
 
-</div>
+</div><!-- /page -->
+
 <script>
-let port = null, reader = null, writer = null, readBuf = '';
+// ═══════════════════════════════════════════════════════════
+//  BINARY PROTOCOL
+//  Frame format used by pymycobot / Elephant Robotics firmware:
+//
+//    [ 0xFE, 0xFE, len, cmd, ...data, 0xFA ]
+//
+//  len  = number of remaining bytes after len itself
+//       = 1 (cmd) + data.length + 1 (0xFA end byte)
+//
+//  Angles are signed 16-bit integers × 100, big-endian.
+//  e.g. 45.00° → 4500 → 0x11 0x94
+// ═══════════════════════════════════════════════════════════
+
+const HEADER = 0xFE;
+const FOOTER = 0xFA;
+
+const CMD = {
+  POWER_ON:           0x10,
+  POWER_OFF:          0x11,
+  IS_CONTROLLER_CONN: 0x12,
+  RELEASE_ALL_SERVOS: 0x13,
+  GET_ANGLES:         0x20,
+  SEND_ANGLES:        0x22,
+};
+
+/** Build a complete binary frame. */
+function frame(cmd, data = []) {
+  const len = data.length + 2; // cmd byte + footer byte
+  return new Uint8Array([HEADER, HEADER, len, cmd, ...data, FOOTER]);
+}
+
+/** Encode one degree value as a big-endian signed int16 × 100. */
+function encDeg(deg) {
+  let v = Math.round(parseFloat(deg) * 100);
+  v = Math.max(-32768, Math.min(32767, v));
+  if (v < 0) v += 65536;
+  return [(v >> 8) & 0xFF, v & 0xFF];
+}
+
+/** Decode a big-endian signed int16 back to degrees. */
+function decDeg(hi, lo) {
+  let v = (hi << 8) | lo;
+  if (v > 32767) v -= 65536;
+  return (v / 100).toFixed(2);
+}
+
+/** Build a SEND_ANGLES frame for 4 joints + speed (1-100). */
+function frameSendAngles(angles, speed) {
+  const data = [];
+  angles.forEach(a => data.push(...encDeg(a)));
+  data.push(Math.max(1, Math.min(100, Math.round(speed))));
+  return frame(CMD.SEND_ANGLES, data);
+}
+
+
+// ═══════════════════════════════════════════════════════════
+//  SERIAL
+// ═══════════════════════════════════════════════════════════
+
+let port    = null;
+let reader  = null;
+let writer  = null;
+let rxBuf   = new Uint8Array(0);
+
+async function connectSerial() {
+  if (!('serial' in navigator)) {
+    log('Web Serial API not available — use Chrome or Edge 89+.', 'err');
+    return;
+  }
+  try {
+    port = await navigator.serial.requestPort();
+    const baud = parseInt(document.getElementById('baudSelect').value);
+    await port.open({ baudRate: baud });
+    writer = port.writable.getWriter();
+    reader = port.readable.getReader();
+    setConnected(true);
+    log(`Port opened at ${baud} baud.`, 'sys');
+    readLoop();
+  } catch (e) {
+    if (e.name !== 'NotFoundError') log(`Connect error: ${e.message}`, 'err');
+  }
+}
+
+async function disconnectSerial() {
+  try {
+    if (reader) { await reader.cancel(); reader.releaseLock(); reader = null; }
+    if (writer) { writer.releaseLock(); writer = null; }
+    if (port)   { await port.close();   port   = null; }
+  } catch (e) {
+    log(`Disconnect error: ${e.message}`, 'err');
+  }
+  rxBuf = new Uint8Array(0);
+  setConnected(false);
+  log('Port closed.', 'sys');
+}
+
+async function readLoop() {
+  while (reader) {
+    try {
+      const { value, done } = await reader.read();
+      if (done) break;
+      // append incoming bytes to buffer
+      const merged = new Uint8Array(rxBuf.length + value.length);
+      merged.set(rxBuf);
+      merged.set(value, rxBuf.length);
+      rxBuf = merged;
+      drainRxBuf();
+    } catch (e) {
+      if (reader) log(`Read error: ${e.message}`, 'err');
+      break;
+    }
+  }
+}
+
+/** Try to parse complete frames out of the receive buffer. */
+function drainRxBuf() {
+  while (rxBuf.length >= 4) {
+    // hunt for 0xFE 0xFE header
+    if (rxBuf[0] !== HEADER || rxBuf[1] !== HEADER) {
+      rxBuf = rxBuf.slice(1);
+      continue;
+    }
+    const totalLen = rxBuf[2];           // len field
+    const frameLen = 3 + totalLen;       // 2 header + 1 len + cmd + data + footer
+    if (rxBuf.length < frameLen) break;  // wait for more bytes
+
+    const f = rxBuf.slice(0, frameLen);
+    rxBuf   = rxBuf.slice(frameLen);
+    handleFrame(f);
+  }
+}
+
+function handleFrame(f) {
+  const cmd  = f[3];
+  const data = Array.from(f.slice(4, f.length - 1));
+  const hex  = Array.from(f).map(b => b.toString(16).padStart(2, '0').toUpperCase()).join(' ');
+  log(`rx  ${hex}`, 'rx');
+
+  // ── decode known responses ──
+  if (cmd === CMD.IS_CONTROLLER_CONN && data.length >= 1) {
+    const ok = data[0] === 1;
+    log(`→ Ping: controller ${ok ? 'connected ✓' : 'NOT connected ✗'}`, ok ? 'info' : 'err');
+
+  } else if (cmd === CMD.GET_ANGLES && data.length >= 8) {
+    const a = [];
+    for (let i = 0; i < 4; i++) a.push(decDeg(data[i * 2], data[i * 2 + 1]));
+    log(`→ Angles: J1=${a[0]}°  J2=${a[1]}°  J3=${a[2]}°  J4=${a[3]}°`, 'info');
+    // update sliders and number inputs to match live robot position
+    a.forEach((deg, i) => {
+      document.getElementById(`js${i}`).value = deg;
+      document.getElementById(`jn${i}`).value = deg;
+    });
+
+  } else if (cmd === CMD.POWER_ON) {
+    log('→ Power on acknowledged.', 'info');
+
+  } else if (cmd === CMD.SEND_ANGLES) {
+    log('→ Move command acknowledged.', 'info');
+  }
+}
+
+async function sendFrame(bytes) {
+  if (!writer) { log('Not connected.', 'err'); return; }
+  try {
+    const hex = Array.from(bytes).map(b => b.toString(16).padStart(2, '0').toUpperCase()).join(' ');
+    log(`tx  ${hex}`, 'tx');
+    await writer.write(bytes);
+  } catch (e) {
+    log(`Send error: ${e.message}`, 'err');
+  }
+}
+
+
+// ═══════════════════════════════════════════════════════════
+//  COMMANDS
+// ═══════════════════════════════════════════════════════════
+
+function cmdPing()      { sendFrame(frame(CMD.IS_CONTROLLER_CONN)); }
+function cmdGetAngles() { sendFrame(frame(CMD.GET_ANGLES)); }
+function cmdPowerOn()   { sendFrame(frame(CMD.POWER_ON)); }
+function cmdRelease()   { sendFrame(frame(CMD.RELEASE_ALL_SERVOS)); }
+
+function cmdSendAngles() {
+  const spd    = parseInt(document.getElementById('speedSlider').value);
+  const angles = JOINTS.map((_, i) => document.getElementById(`jn${i}`).value);
+  sendFrame(frameSendAngles(angles, spd));
+}
+
+function cmdHome() {
+  JOINTS.forEach((_, i) => {
+    document.getElementById(`js${i}`).value = 0;
+    document.getElementById(`jn${i}`).value = '0.0';
+  });
+  sendFrame(frameSendAngles([0, 0, 0, 0], 30));
+}
+
+
+// ═══════════════════════════════════════════════════════════
+//  JOINT SLIDERS
+// ═══════════════════════════════════════════════════════════
 
 const JOINTS = [
-  { name: 'J1', min: -165, max: 165 },
-  { name: 'J2', min: -90,  max: 90  },
-  { name: 'J3', min: -50,  max: 90  },
-  { name: 'J4', min: -165, max: 165 },
+  { name: 'J1', min: -165, max:  165 },
+  { name: 'J2', min:  -90, max:   90 },
+  { name: 'J3', min:  -50, max:   90 },
+  { name: 'J4', min: -165, max:  165 },
 ];
 
-// ── build joint rows ──
-const jGrid = document.getElementById('jointGrid');
-JOINTS.forEach((j, i) => {
-  const row = document.createElement('div');
-  row.className = 'joint';
-  row.innerHTML = `
-    <span class="jname">${j.name}</span>
-    <input type="range" id="js${i}" min="${j.min}" max="${j.max}" value="0" step="0.5">
-    <div class="jval">
-      <input type="number" id="jn${i}" min="${j.min}" max="${j.max}" value="0" step="0.5">
-      <span class="jdeg">°</span>
-    </div>`;
-  jGrid.appendChild(row);
+(function buildJoints() {
+  const grid = document.getElementById('jointGrid');
+  JOINTS.forEach((j, i) => {
+    const row = document.createElement('div');
+    row.className = 'joint';
+    row.innerHTML = `
+      <span class="jname">${j.name}</span>
+      <input type="range"  id="js${i}" min="${j.min}" max="${j.max}" value="0" step="0.5" />
+      <div class="jval">
+        <input type="number" id="jn${i}" min="${j.min}" max="${j.max}" value="0" step="0.5" />
+        <span class="jdeg">°</span>
+      </div>`;
+    grid.appendChild(row);
 
-  const slider = document.getElementById(`js${i}`);
-  const num    = document.getElementById(`jn${i}`);
-  slider.addEventListener('input', () => { num.value = parseFloat(slider.value).toFixed(1); });
-  num.addEventListener('input',    () => { slider.value = num.value; });
-});
+    const slider = document.getElementById(`js${i}`);
+    const num    = document.getElementById(`jn${i}`);
+    slider.addEventListener('input', () => { num.value    = parseFloat(slider.value).toFixed(1); });
+    num.addEventListener('input',    () => { slider.value = num.value; });
+  });
+})();
 
-// ── saved locations (localStorage) ──
-let saved = JSON.parse(localStorage.getItem('mp260_locs') || '[]');
+
+// ═══════════════════════════════════════════════════════════
+//  SAVED LOCATIONS  (persisted to localStorage)
+// ═══════════════════════════════════════════════════════════
+
+const STORAGE_KEY = 'mp260_locations';
+let saved = [];
+
+try { saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); } catch (_) { saved = []; }
+
+function persistSaved() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(saved));
+}
 
 function renderSaved() {
   const list = document.getElementById('savedList');
@@ -345,7 +574,8 @@ function renderSaved() {
     item.className = 'saved-item';
     item.innerHTML = `
       <span class="saved-name">${esc(loc.name)}</span>
-      <span class="saved-angles">${loc.angles.map(a => a.toFixed(1) + '°').join('  ')}</span>
+      <span class="saved-angles">${loc.angles.map(a => (+a).toFixed(1) + '°').join('  ')}</span>
+      <span class="saved-spd">spd ${loc.speed}</span>
       <button onclick="recallLocation(${i})">Go</button>
       <button class="ghost" onclick="deleteLocation(${i})" title="Delete">✕</button>`;
     list.appendChild(item);
@@ -354,129 +584,68 @@ function renderSaved() {
 
 function saveLocation() {
   const nameEl = document.getElementById('saveName');
-  const name = nameEl.value.trim() || `location ${saved.length + 1}`;
+  const name   = nameEl.value.trim() || `location ${saved.length + 1}`;
   const angles = JOINTS.map((_, i) => parseFloat(document.getElementById(`jn${i}`).value || 0));
   const speed  = parseInt(document.getElementById('speedSlider').value);
   saved.push({ name, angles, speed });
-  localStorage.setItem('mp260_locs', JSON.stringify(saved));
+  persistSaved();
   nameEl.value = '';
   renderSaved();
-  log(`saved "${name}"`, 'sys');
+  log(`Saved "${name}".`, 'sys');
 }
 
 function recallLocation(i) {
   const loc = saved[i];
   JOINTS.forEach((_, j) => {
     document.getElementById(`js${j}`).value = loc.angles[j];
-    document.getElementById(`jn${j}`).value = loc.angles[j].toFixed(1);
+    document.getElementById(`jn${j}`).value = (+loc.angles[j]).toFixed(1);
   });
-  document.getElementById('speedSlider').value = loc.speed;
+  document.getElementById('speedSlider').value    = loc.speed;
   document.getElementById('speedNum').textContent = loc.speed;
-  sendCmd(`send_angles([${loc.angles.join(',')}],${loc.speed})`);
+  sendFrame(frameSendAngles(loc.angles, loc.speed));
+  log(`Recalling "${loc.name}".`, 'sys');
 }
 
 function deleteLocation(i) {
   const name = saved[i].name;
   saved.splice(i, 1);
-  localStorage.setItem('mp260_locs', JSON.stringify(saved));
+  persistSaved();
   renderSaved();
-  log(`deleted "${name}"`, 'sys');
+  log(`Deleted "${name}".`, 'sys');
 }
 
 renderSaved();
 
-// ── serial ──
-async function connectSerial() {
-  if (!('serial' in navigator)) {
-    log('Web Serial not available — use Chrome or Edge 89+', 'err'); return;
-  }
-  try {
-    port = await navigator.serial.requestPort();
-    const baud = parseInt(document.getElementById('baudSelect').value);
-    await port.open({ baudRate: baud });
-    writer = port.writable.getWriter();
-    reader = port.readable.getReader();
-    setConnected(true);
-    log(`connected at ${baud} baud`, 'sys');
-    readLoop();
-  } catch(e) {
-    if (e.name !== 'NotFoundError') log(`connect: ${e.message}`, 'err');
-  }
-}
 
-async function disconnectSerial() {
-  try {
-    if (reader) { await reader.cancel(); reader.releaseLock(); reader = null; }
-    if (writer) { writer.releaseLock(); writer = null; }
-    if (port)   { await port.close(); port = null; }
-  } catch(e) { log(`disconnect: ${e.message}`, 'err'); }
-  setConnected(false);
-  log('disconnected', 'sys');
-}
-
-async function readLoop() {
-  while (reader) {
-    try {
-      const { value, done } = await reader.read();
-      if (done) break;
-      readBuf += new TextDecoder().decode(value);
-      const lines = readBuf.split('\n');
-      readBuf = lines.pop();
-      lines.forEach(l => { if (l.trim()) log(l.trim(), 'rx'); });
-    } catch(e) {
-      if (reader) log(`read: ${e.message}`, 'err');
-      break;
-    }
-  }
-}
-
-async function sendCmd(cmd) {
-  if (!writer) { log('not connected', 'err'); return; }
-  try {
-    await writer.write(new TextEncoder().encode(cmd + '\r\n'));
-    log(cmd, 'tx');
-  } catch(e) { log(`send: ${e.message}`, 'err'); }
-}
-
-function sendRaw() {
-  const el = document.getElementById('rawCmd');
-  const v = el.value.trim();
-  if (!v) return;
-  sendCmd(v); el.value = '';
-}
-
-function sendAngles() {
-  const spd = document.getElementById('speedSlider').value;
-  const a = JOINTS.map((_, i) => parseFloat(document.getElementById(`jn${i}`).value || 0));
-  sendCmd(`send_angles([${a.join(',')}],${spd})`);
-}
-
-function goHome() {
-  JOINTS.forEach((_, i) => {
-    document.getElementById(`js${i}`).value = 0;
-    document.getElementById(`jn${i}`).value = '0.0';
-  });
-  sendCmd('send_angles([0,0,0,0],30)');
-}
+// ═══════════════════════════════════════════════════════════
+//  UI HELPERS
+// ═══════════════════════════════════════════════════════════
 
 function setConnected(c) {
-  document.getElementById('dot').className = 'dot' + (c ? ' live' : '');
-  document.getElementById('connLabel').textContent = c ? 'connected' : 'disconnected';
-  document.getElementById('connectBtn').disabled = c;
+  document.getElementById('dot').className          = 'dot' + (c ? ' live' : '');
+  document.getElementById('connLabel').textContent  = c ? 'connected' : 'disconnected';
+  document.getElementById('connectBtn').disabled    = c;
   document.getElementById('disconnectBtn').disabled = !c;
 }
 
 function log(msg, type = 'sys') {
-  const t = document.getElementById('terminal');
+  const term = document.getElementById('terminal');
   const line = document.createElement('div');
   line.className = `term-line ${type}`;
-  const time = new Date().toTimeString().slice(0,8);
-  line.innerHTML = `<span class="term-time">${time}</span><span class="term-text">${esc(msg)}</span>`;
-  t.appendChild(line);
-  t.scrollTop = t.scrollHeight;
+  const t = new Date().toTimeString().slice(0, 8);
+  line.innerHTML = `<span class="term-time">${t}</span><span class="term-text">${esc(msg)}</span>`;
+  term.appendChild(line);
+  term.scrollTop = term.scrollHeight;
 }
+
 function clearLog() { document.getElementById('terminal').innerHTML = ''; }
-function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function esc(s) {
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
 </script>
 </body>
 </html>
