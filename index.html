@@ -13,144 +13,100 @@
   --text: #1a1a1a; --muted: #999; --accent: #1a6b3c; --danger: #c0392b;
   --mono: 'IBM Plex Mono', 'Courier New', monospace;
 }
-html, body {
-  min-height: 100%; background: var(--bg); color: var(--text);
-  font-family: var(--mono); font-size: 13px; -webkit-font-smoothing: antialiased;
-}
+html, body { min-height:100%; background:var(--bg); color:var(--text); font-family:var(--mono); font-size:13px; -webkit-font-smoothing:antialiased; }
 
-/* two-column layout */
-.shell {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 40px 24px 80px;
-}
-header {
-  display: flex; align-items: baseline; justify-content: space-between;
-  margin-bottom: 32px;
-}
-.title { font-size: 15px; font-weight: 500; }
-.title span { color: var(--accent); }
-.status { display: flex; align-items: center; gap: 7px; font-size: 11px; color: var(--muted); }
-.dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border-mid); transition: background .3s; }
-.dot.live { background: var(--accent); }
+.shell { max-width:1100px; margin:0 auto; padding:40px 24px 80px; }
 
-.columns {
-  display: grid;
-  grid-template-columns: 1fr 340px;
-  gap: 32px;
-  align-items: start;
-}
+header { display:flex; align-items:baseline; justify-content:space-between; margin-bottom:32px; }
+.title { font-size:15px; font-weight:500; }
+.title .green { color:var(--accent); }
+.title .ver { font-weight:400; color:var(--muted); margin-left:8px; font-size:13px; }
+.status { display:flex; align-items:center; gap:7px; font-size:11px; color:var(--muted); }
+.dot { width:6px; height:6px; border-radius:50%; background:var(--border-mid); transition:background .3s; }
+.dot.live { background:var(--accent); }
 
-/* left column sections */
-.section { margin-bottom: 28px; }
-.label {
-  font-size: 10px; letter-spacing: .14em; text-transform: uppercase;
-  color: var(--muted); margin-bottom: 12px;
-}
-.row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
-hr { border: none; border-top: 1px solid var(--border); margin: 22px 0; }
+.columns { display:grid; grid-template-columns:1fr 320px; gap:32px; align-items:start; }
+.section { margin-bottom:28px; }
+.label { font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:12px; }
+.row { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+hr { border:none; border-top:1px solid var(--border); margin:22px 0; }
 
-/* inputs */
 select, input[type="text"], input[type="number"] {
-  height: 34px; border: 1px solid var(--border); border-radius: 3px;
-  background: var(--white); color: var(--text); font-family: var(--mono);
-  font-size: 12px; padding: 0 10px; outline: none; transition: border-color .15s;
-  -webkit-appearance: none;
+  height:34px; border:1px solid var(--border); border-radius:3px; background:var(--white);
+  color:var(--text); font-family:var(--mono); font-size:12px; padding:0 10px;
+  outline:none; transition:border-color .15s; -webkit-appearance:none;
 }
-select:focus, input:focus { border-color: var(--accent); }
+select:focus, input:focus { border-color:var(--accent); }
 select {
-  cursor: pointer; padding-right: 26px;
-  background-image: url("data:image/svg+xml,%3Csvg width='9' height='5' viewBox='0 0 9 5' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l3.5 3L8 1' stroke='%23999' stroke-width='1.2' fill='none'/%3E%3C/svg%3E");
-  background-repeat: no-repeat; background-position: right 9px center; background-color: var(--white);
+  cursor:pointer; padding-right:26px;
+  background-image:url("data:image/svg+xml,%3Csvg width='9' height='5' viewBox='0 0 9 5' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l3.5 3L8 1' stroke='%23999' stroke-width='1.2' fill='none'/%3E%3C/svg%3E");
+  background-repeat:no-repeat; background-position:right 9px center; background-color:var(--white);
 }
-
-/* buttons */
 button {
-  height: 34px; padding: 0 14px; border: 1px solid var(--border); border-radius: 3px;
-  background: var(--white); color: var(--text); font-family: var(--mono); font-size: 12px;
-  cursor: pointer; white-space: nowrap; transition: border-color .15s, background .15s;
+  height:34px; padding:0 14px; border:1px solid var(--border); border-radius:3px;
+  background:var(--white); color:var(--text); font-family:var(--mono); font-size:12px;
+  cursor:pointer; white-space:nowrap; transition:border-color .15s, background .15s;
 }
-button:hover { border-color: var(--border-mid); background: var(--bg); }
-button:active { transform: scale(0.98); }
-button:disabled { opacity: .3; cursor: not-allowed; transform: none; }
-button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
-button.primary:hover { background: #155732; border-color: #155732; }
-button.ghost { background: transparent; border-color: transparent; color: var(--muted); padding: 0 8px; }
-button.ghost:hover { color: var(--text); }
+button:hover { border-color:var(--border-mid); background:var(--bg); }
+button:active { transform:scale(0.98); }
+button:disabled { opacity:.3; cursor:not-allowed; transform:none; }
+button.primary { background:var(--accent); border-color:var(--accent); color:#fff; }
+button.primary:hover { background:#155732; border-color:#155732; }
+button.ghost { background:transparent; border-color:transparent; color:var(--muted); padding:0 8px; }
+button.ghost:hover { color:var(--text); }
 
-/* joints */
-.joints { display: flex; flex-direction: column; gap: 14px; }
-.joint { display: grid; grid-template-columns: 100px 1fr 76px; gap: 12px; align-items: center; }
-.jlabel { display: flex; flex-direction: column; gap: 2px; }
-.jname { font-size: 12px; font-weight: 500; }
-.jrange { font-size: 10px; color: var(--muted); }
-
+.joints { display:flex; flex-direction:column; gap:14px; }
+.joint { display:grid; grid-template-columns:100px 1fr 76px; gap:12px; align-items:center; }
+.jlabel { display:flex; flex-direction:column; gap:2px; }
+.jname { font-size:12px; font-weight:500; }
+.jrange { font-size:10px; color:var(--muted); }
 input[type="range"] {
-  -webkit-appearance: none; appearance: none; height: 1px;
-  background: var(--border-mid); border: none; padding: 0; outline: none;
-  cursor: pointer; width: 100%;
+  -webkit-appearance:none; appearance:none; height:1px; background:var(--border-mid);
+  border:none; padding:0; outline:none; cursor:pointer; width:100%;
 }
 input[type="range"]::-webkit-slider-thumb {
-  -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%;
-  background: var(--white); border: 1.5px solid var(--accent); cursor: pointer; transition: transform .1s;
+  -webkit-appearance:none; width:16px; height:16px; border-radius:50%;
+  background:var(--white); border:1.5px solid var(--accent); cursor:pointer; transition:transform .1s;
 }
-input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.15); }
-input[type="range"]::-moz-range-thumb {
-  width: 16px; height: 16px; border-radius: 50%;
-  background: var(--white); border: 1.5px solid var(--accent);
-}
-.jval { display: flex; align-items: center; gap: 4px; }
-.jval input[type="number"] { width: 60px; text-align: right; padding: 0 6px; height: 30px; }
-.jdeg { font-size: 11px; color: var(--muted); }
+input[type="range"]::-webkit-slider-thumb:hover { transform:scale(1.15); }
+input[type="range"]::-moz-range-thumb { width:16px; height:16px; border-radius:50%; background:var(--white); border:1.5px solid var(--accent); }
+.jval { display:flex; align-items:center; gap:4px; }
+.jval input[type="number"] { width:60px; text-align:right; padding:0 6px; height:30px; }
+.jdeg { font-size:11px; color:var(--muted); }
+.speed-row { display:grid; grid-template-columns:1fr 36px; gap:12px; align-items:center; }
+.speed-num { font-size:12px; text-align:right; }
 
-/* speed */
-.speed-row { display: grid; grid-template-columns: 1fr 36px; gap: 12px; align-items: center; }
-.speed-num { font-size: 12px; text-align: right; color: var(--text); }
+.saved-list { display:flex; flex-direction:column; gap:6px; margin-bottom:10px; min-height:24px; }
+.saved-item { display:flex; align-items:center; gap:8px; padding:9px 12px; background:var(--white); border:1px solid var(--border); border-radius:3px; }
+.saved-item:hover { border-color:var(--border-mid); }
+.saved-name { flex:0 0 auto; font-size:12px; min-width:80px; }
+.saved-angles { flex:1; font-size:11px; color:var(--muted); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.save-row { display:flex; gap:8px; }
+.save-row input[type="text"] { flex:1; }
+.empty { font-size:12px; color:var(--muted); padding:4px 0; }
 
-/* saved locations */
-.saved-list { display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px; min-height: 28px; }
-.saved-item {
-  display: flex; align-items: center; gap: 8px; padding: 9px 12px;
-  background: var(--white); border: 1px solid var(--border); border-radius: 3px;
-}
-.saved-item:hover { border-color: var(--border-mid); }
-.saved-name { flex: 0 0 auto; font-size: 12px; min-width: 80px; }
-.saved-angles { flex: 1; font-size: 11px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.save-row { display: flex; gap: 8px; }
-.save-row input[type="text"] { flex: 1; }
-.empty { font-size: 12px; color: var(--muted); padding: 4px 0; }
-
-/* terminal (right column) */
-.term-col {
-  position: sticky;
-  top: 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-.term-header {
-  display: flex; align-items: center; justify-content: space-between;
-}
+.term-col { position:sticky; top:24px; display:flex; flex-direction:column; gap:8px; }
+.term-header { display:flex; align-items:center; justify-content:space-between; }
 .term {
-  background: var(--white); border: 1px solid var(--border); border-radius: 3px;
-  padding: 10px 12px; height: calc(100vh - 160px); min-height: 400px;
-  overflow-y: auto; display: flex; flex-direction: column; gap: 1px;
-  scrollbar-width: thin; scrollbar-color: var(--border) transparent;
+  background:var(--white); border:1px solid var(--border); border-radius:3px;
+  padding:10px 12px; height:calc(100vh - 160px); min-height:400px;
+  overflow-y:auto; display:flex; flex-direction:column; gap:1px;
+  scrollbar-width:thin; scrollbar-color:var(--border) transparent;
 }
-.term::-webkit-scrollbar { width: 4px; }
-.term::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
-.term-line { display: flex; gap: 8px; font-size: 11px; line-height: 1.8; }
-.term-time { color: var(--muted); flex-shrink: 0; }
-.tx   .term-text { color: var(--accent); }
-.rx   .term-text { color: var(--text); }
-.err  .term-text { color: var(--danger); }
-.info .term-text { color: #1a6b3c; font-style: italic; }
-.sys  .term-text { color: var(--muted); }
+.term::-webkit-scrollbar { width:4px; }
+.term::-webkit-scrollbar-thumb { background:var(--border); border-radius:2px; }
+.term-line { display:flex; gap:8px; font-size:11px; line-height:1.8; }
+.term-time { color:var(--muted); flex-shrink:0; }
+.tx   .term-text { color:var(--accent); }
+.rx   .term-text { color:var(--text); }
+.err  .term-text { color:var(--danger); }
+.info .term-text { color:#1a6b3c; font-style:italic; }
+.sys  .term-text { color:var(--muted); }
 
-@media (max-width: 720px) {
-  .columns { grid-template-columns: 1fr; }
-  .term { height: 220px; min-height: unset; }
-  .term-col { position: static; }
+@media(max-width:720px){
+  .columns { grid-template-columns:1fr; }
+  .term { height:220px; min-height:unset; }
+  .term-col { position:static; }
 }
 </style>
 </head>
@@ -158,13 +114,11 @@ input[type="range"]::-moz-range-thumb {
 <div class="shell">
 
   <header>
-    <div class="title">myPalletizer <span>260</span> <span style="font-size:10px;font-weight:400;color:var(--muted);margin-left:8px">v1.11</span></div>
+    <div class="title">myPalletizer <span class="green">260</span> <span class="ver">v1.12</span></div>
     <div class="status"><div class="dot" id="dot"></div><span id="connLabel">disconnected</span></div>
   </header>
 
   <div class="columns">
-
-    <!-- ── LEFT COLUMN ── -->
     <div class="left">
 
       <!-- connection -->
@@ -221,7 +175,7 @@ input[type="range"]::-moz-range-thumb {
 
     </div>
 
-    <!-- ── RIGHT COLUMN: terminal ── -->
+    <!-- terminal -->
     <div class="term-col">
       <div class="term-header">
         <span class="label" style="margin-bottom:0">Terminal</span>
@@ -229,43 +183,56 @@ input[type="range"]::-moz-range-thumb {
       </div>
       <div class="term" id="terminal"></div>
     </div>
-
   </div>
-</div>
 
+</div>
 <script>
 // ─────────────────────────────────────────
-// Joint definitions
+// Joint config
 // ─────────────────────────────────────────
 var JOINTS = [
-  { name: 'J1', min: -150, max:  50,  home: -38.9 },
-  { name: 'J2', min:  -90, max:  90,  home: -57.6 },
-  { name: 'J3', min:  -90, max:  90,  home:  53.3 },
-  { name: 'J4', min: -120, max:  55,  home: -35.3 },
+  { name:'J1', min:-150, max: 50, home:-38.9 },
+  { name:'J2', min: -90, max: 90, home:-57.6 },
+  { name:'J3', min: -90, max: 90, home: 53.3 },
+  { name:'J4', min:-120, max: 55, home:-35.3 },
 ];
 
 // ─────────────────────────────────────────
-// Protocol  [0xFE 0xFE len cmd data... 0xFA]
+// Protocol
+// Frame: 0xFE 0xFE [len] [cmd] [data...] 0xFA
+// len = cmd(1) + data.length + footer(1)
+// Verified from pymycobot source (common.py ProtocolCode)
 // ─────────────────────────────────────────
-var HDR = 0xFE, TAIL = 0xFA;
+var HEADER = 0xFE;
+var FOOTER = 0xFA;
+
 var CMD = {
-  POWER_ON:     0x10,
-  RELEASE:        0x13,
-  GET_ANGLES:     0x20,
-  SEND_ANGLES:    0x22,
-  SET_FRESH_MODE: 0x2c,
-  PING:           0x12,
+  POWER_ON:            0x10,
+  POWER_OFF:           0x11,
+  IS_CTRL_CONNECTED:   0x12,
+  RELEASE_ALL_SERVOS:  0x13,
+  GET_ANGLES:          0x20,
+  SEND_ANGLE:          0x21,
+  SEND_ANGLES:         0x22,
 };
 
-function mkFrame(cmd, data) {
-  var out = [HDR, HDR, data.length + 2, cmd];
-  for (var i = 0; i < data.length; i++) out.push(data[i] & 0xFF);
-  out.push(TAIL);
-  return new Uint8Array(out);
+// Build a complete frame from cmd byte + data array
+function frame(cmd, data) {
+  var pkt = [HEADER, HEADER, data.length + 2, cmd];
+  for (var i = 0; i < data.length; i++) {
+    pkt.push(data[i] & 0xFF);
+  }
+  pkt.push(FOOTER);
+  return new Uint8Array(pkt);
 }
 
+// Encode degrees as signed int16 big-endian × 100
 function degToBytes(deg) {
   var v = Math.round(parseFloat(deg) * 100);
+  // clamp to int16 range
+  if (v > 32767)  v = 32767;
+  if (v < -32768) v = -32768;
+  // to unsigned 16-bit for byte packing
   if (v < 0) v = v + 65536;
   return [(v >> 8) & 0xFF, v & 0xFF];
 }
@@ -276,7 +243,8 @@ function bytesToDeg(hi, lo) {
   return (v / 100).toFixed(1);
 }
 
-function mkSendAngles(angles, speed) {
+// Build SEND_ANGLES frame: 4×2 bytes for angles + 1 byte speed
+function frameSendAngles(angles, speed) {
   var data = [];
   for (var i = 0; i < 4; i++) {
     var b = degToBytes(angles[i]);
@@ -284,23 +252,20 @@ function mkSendAngles(angles, speed) {
     data.push(b[1]);
   }
   data.push(Math.min(100, Math.max(1, Math.round(Number(speed)))));
-  return mkFrame(CMD.SEND_ANGLES, data);
-}
-
-// send set_fresh_mode(0) then the angles frame with a small gap
-async function txAngles(angles, speed) {
-  await tx(mkFrame(CMD.SET_FRESH_MODE, [0]));
-  await new Promise(function(r){ setTimeout(r, 50); });
-  await tx(mkSendAngles(angles, speed));
+  return frame(CMD.SEND_ANGLES, data);
 }
 
 // ─────────────────────────────────────────
 // Serial
 // ─────────────────────────────────────────
-var port = null, writer = null, reader = null, rxBuf = [];
+var port = null, writer = null, reader = null;
+var rxBuf = []; // plain array — no Uint8Array concat issues
 
 async function doConnect() {
-  if (!navigator.serial) { log('Web Serial not available — use Chrome or Edge 89+', 'err'); return; }
+  if (!navigator.serial) {
+    log('Web Serial not available — use Chrome or Edge 89+', 'err');
+    return;
+  }
   try {
     port = await navigator.serial.requestPort();
     var baud = parseInt(document.getElementById('baudSelect').value);
@@ -311,7 +276,7 @@ async function doConnect() {
     log('connected at ' + baud + ' baud', 'sys');
     readLoop();
   } catch(e) {
-    if (e.name !== 'NotFoundError') log('connect error: ' + e.message, 'err');
+    if (e.name !== 'NotFoundError') log('connect: ' + e.message, 'err');
   }
 }
 
@@ -334,7 +299,7 @@ async function readLoop() {
       for (var i = 0; i < r.value.length; i++) rxBuf.push(r.value[i]);
       drainBuf();
     } catch(e) {
-      if (reader) log('read error: ' + e.message, 'err');
+      if (reader) log('read: ' + e.message, 'err');
       break;
     }
   }
@@ -342,77 +307,87 @@ async function readLoop() {
 
 function drainBuf() {
   while (rxBuf.length >= 4) {
-    if (rxBuf[0] !== HDR || rxBuf[1] !== HDR) { rxBuf.shift(); continue; }
+    // find header
+    if (rxBuf[0] !== HEADER || rxBuf[1] !== HEADER) {
+      rxBuf.shift();
+      continue;
+    }
     var len = rxBuf[2];
-    var need = 3 + len;
+    var need = 3 + len; // 2 header + 1 len + len bytes (includes cmd + data + footer)
     if (rxBuf.length < need) break;
-    var frame = rxBuf.splice(0, need);
-    onFrame(frame);
+    var pkt = rxBuf.splice(0, need);
+    onPacket(pkt);
   }
 }
 
-function onFrame(frame) {
-  var hex = frame.map(function(b){ return b.toString(16).padStart(2,'0').toUpperCase(); }).join(' ');
+function onPacket(pkt) {
+  var hex = pkt.map(function(b){ return b.toString(16).padStart(2,'0').toUpperCase(); }).join(' ');
   log('rx  ' + hex, 'rx');
 
-  var cmd  = frame[3];
-  var data = frame.slice(4, frame.length - 1);
+  var cmd  = pkt[3];
+  var data = pkt.slice(4, pkt.length - 1); // strip header(2) + len(1) + cmd(1) + footer(1)
 
-  if (cmd === CMD.PING) {
-    log('→ ping: ' + (data[0] === 1 ? 'controller connected ✓' : 'not connected'), 'info');
+  if (cmd === CMD.IS_CTRL_CONNECTED) {
+    log('→ ping: controller ' + (data[0] === 1 ? 'connected ✓' : 'not connected ✗'), 'info');
   } else if (cmd === CMD.GET_ANGLES && data.length >= 8) {
     var a = [];
     for (var i = 0; i < 4; i++) a.push(bytesToDeg(data[i*2], data[i*2+1]));
     log('→ angles: J1=' + a[0] + '° J2=' + a[1] + '° J3=' + a[2] + '° J4=' + a[3] + '°', 'info');
+    // sync sliders to live position
     a.forEach(function(val, i) {
       var clamped = Math.max(JOINTS[i].min, Math.min(JOINTS[i].max, parseFloat(val)));
-      document.getElementById('js' + i).value = clamped;
-      document.getElementById('jn' + i).value = val;
+      document.getElementById('js'+i).value = clamped;
+      document.getElementById('jn'+i).value = val;
     });
   } else if (cmd === CMD.POWER_ON) {
     log('→ motors on acknowledged', 'info');
-  } else if (cmd === CMD.SEND_ANGLES) {
-    log('→ move acknowledged', 'info');
+  } else if (cmd === CMD.RELEASE_ALL_SERVOS) {
+    log('→ motors off acknowledged', 'info');
   }
 }
 
-async function tx(bytes) {
+async function send(bytes) {
   if (!writer) { log('not connected', 'err'); return; }
   var hex = Array.from(bytes).map(function(b){ return b.toString(16).padStart(2,'0').toUpperCase(); }).join(' ');
   log('tx  ' + hex, 'tx');
-  try { await writer.write(bytes); }
-  catch(e) { log('send error: ' + e.message, 'err'); }
+  try {
+    await writer.write(bytes);
+  } catch(e) {
+    log('send error: ' + e.message, 'err');
+  }
 }
 
 // ─────────────────────────────────────────
 // Commands
 // ─────────────────────────────────────────
-function doPing()      { tx(mkFrame(CMD.PING, [])); }
-function doGetAngles() { tx(mkFrame(CMD.GET_ANGLES, [])); }
-function doPowerOn()   { tx(mkFrame(CMD.POWER_ON, [])); }
-function doRelease()   { tx(mkFrame(CMD.RELEASE, [])); }
+function doPing()      { send(frame(CMD.IS_CTRL_CONNECTED, [])); }
+function doGetAngles() { send(frame(CMD.GET_ANGLES, [])); }
+function doPowerOn()   { send(frame(CMD.POWER_ON, [])); }
+function doRelease()   { send(frame(CMD.RELEASE_ALL_SERVOS, [])); }
 
 function doSend() {
   var spd = parseInt(document.getElementById('speedSlider').value);
-  var angles = JOINTS.map(function(_, i) { return parseFloat(document.getElementById('jn' + i).value) || 0; });
-  log('sending: J1=' + angles[0] + '° J2=' + angles[1] + '° J3=' + angles[2] + '° J4=' + angles[3] + '°', 'sys');
-  txAngles(angles, spd);
+  var angles = JOINTS.map(function(_, i) {
+    return parseFloat(document.getElementById('jn'+i).value) || 0;
+  });
+  log('sending: J1='+angles[0]+'° J2='+angles[1]+'° J3='+angles[2]+'° J4='+angles[3]+'° spd='+spd, 'sys');
+  send(frameSendAngles(angles, spd));
 }
 
 function doHome() {
   var angles = JOINTS.map(function(j) { return j.home; });
   JOINTS.forEach(function(j, i) {
-    document.getElementById('js' + i).value = Math.max(j.min, Math.min(j.max, j.home));
-    document.getElementById('jn' + i).value = j.home;
+    document.getElementById('js'+i).value = Math.max(j.min, Math.min(j.max, j.home));
+    document.getElementById('jn'+i).value = j.home;
   });
-  log('homing: J1=' + angles[0] + '° J2=' + angles[1] + '° J3=' + angles[2] + '° J4=' + angles[3] + '°', 'sys');
-  txAngles(angles, 30);
+  log('homing: J1='+angles[0]+'° J2='+angles[1]+'° J3='+angles[2]+'° J4='+angles[3]+'°', 'sys');
+  send(frameSendAngles(angles, 30));
 }
 
 // ─────────────────────────────────────────
 // Joint UI
 // ─────────────────────────────────────────
-(function buildJoints() {
+(function() {
   var grid = document.getElementById('jointGrid');
   JOINTS.forEach(function(j, i) {
     var row = document.createElement('div');
@@ -420,30 +395,30 @@ function doHome() {
 
     var lbl = document.createElement('div');
     lbl.className = 'jlabel';
-    lbl.innerHTML = '<span class="jname">' + j.name + '</span><span class="jrange">' + j.min + '° to ' + j.max + '°</span>';
+    lbl.innerHTML = '<span class="jname">'+j.name+'</span><span class="jrange">'+j.min+'° to '+j.max+'°</span>';
 
     var sl = document.createElement('input');
-    sl.type = 'range'; sl.id = 'js' + i;
-    sl.min = j.min; sl.max = j.max; sl.step = '0.5';
+    sl.type='range'; sl.id='js'+i;
+    sl.min=j.min; sl.max=j.max; sl.step='0.5';
     sl.value = Math.max(j.min, Math.min(j.max, j.home));
 
     var wrap = document.createElement('div');
     wrap.className = 'jval';
     var nm = document.createElement('input');
-    nm.type = 'number'; nm.id = 'jn' + i;
-    nm.min = j.min; nm.max = j.max; nm.step = '0.5';
+    nm.type='number'; nm.id='jn'+i;
+    nm.min=j.min; nm.max=j.max; nm.step='0.5';
     nm.value = j.home;
     var deg = document.createElement('span');
-    deg.className = 'jdeg'; deg.textContent = '°';
+    deg.className='jdeg'; deg.textContent='°';
     wrap.appendChild(nm); wrap.appendChild(deg);
 
     row.appendChild(lbl); row.appendChild(sl); row.appendChild(wrap);
     grid.appendChild(row);
 
-    // keep slider and number in sync
-    sl.addEventListener('input', function() { nm.value = parseFloat(sl.value).toFixed(1); });
-    nm.addEventListener('input', function() {
-      sl.value = Math.max(j.min, Math.min(j.max, parseFloat(nm.value) || 0));
+    // keep in sync
+    sl.addEventListener('input', function(){ nm.value = parseFloat(sl.value).toFixed(1); });
+    nm.addEventListener('input', function(){
+      sl.value = Math.max(j.min, Math.min(j.max, parseFloat(nm.value)||0));
     });
   });
 })();
@@ -453,7 +428,7 @@ function doHome() {
 // ─────────────────────────────────────────
 var STORE = 'mp260_v3';
 var saved = [];
-try { saved = JSON.parse(localStorage.getItem(STORE) || '[]'); } catch(_) { saved = []; }
+try { saved = JSON.parse(localStorage.getItem(STORE)||'[]'); } catch(_){ saved=[]; }
 
 function persist() { localStorage.setItem(STORE, JSON.stringify(saved)); }
 
@@ -461,93 +436,94 @@ function renderSaved() {
   var list = document.getElementById('savedList');
   list.innerHTML = '';
   if (!saved.length) {
-    var emp = document.createElement('div');
-    emp.className = 'empty'; emp.textContent = 'No saved locations yet.';
-    list.appendChild(emp);
-    return;
+    var e = document.createElement('div');
+    e.className='empty'; e.textContent='No saved locations yet.';
+    list.appendChild(e); return;
   }
   saved.forEach(function(loc, i) {
     var item = document.createElement('div');
     item.className = 'saved-item';
 
     var nm = document.createElement('span');
-    nm.className = 'saved-name'; nm.textContent = loc.name;
+    nm.className='saved-name'; nm.textContent=loc.name;
 
     var ang = document.createElement('span');
-    ang.className = 'saved-angles';
-    ang.textContent = loc.angles.map(function(a, k) {
-      return JOINTS[k].name + '=' + parseFloat(a).toFixed(1) + '°';
+    ang.className='saved-angles';
+    ang.textContent = loc.angles.map(function(a,k){
+      return JOINTS[k].name+'='+parseFloat(a).toFixed(1)+'°';
     }).join('  ');
 
     var goBtn = document.createElement('button');
-    goBtn.textContent = 'Go';
-    goBtn.addEventListener('click', function() { recall(i); });
+    goBtn.textContent='Go';
+    goBtn.addEventListener('click', function(){ recall(i); });
 
     var delBtn = document.createElement('button');
-    delBtn.className = 'ghost'; delBtn.textContent = '✕'; delBtn.title = 'Delete';
-    delBtn.addEventListener('click', function() {
-      saved.splice(i, 1); persist(); renderSaved();
-      log('deleted "' + loc.name + '"', 'sys');
+    delBtn.className='ghost'; delBtn.textContent='✕'; delBtn.title='Delete';
+    delBtn.addEventListener('click', function(){
+      var name = saved[i] ? saved[i].name : '?';
+      saved.splice(i,1); persist(); renderSaved();
+      log('deleted "'+name+'"','sys');
     });
 
-    item.appendChild(nm); item.appendChild(ang); item.appendChild(goBtn); item.appendChild(delBtn);
+    item.appendChild(nm); item.appendChild(ang);
+    item.appendChild(goBtn); item.appendChild(delBtn);
     list.appendChild(item);
   });
 }
 
 function doSave() {
-  var el   = document.getElementById('saveName');
-  var name = el.value.trim() || ('location ' + (saved.length + 1));
-  var angles = JOINTS.map(function(_, i) { return parseFloat(document.getElementById('jn' + i).value) || 0; });
+  var el = document.getElementById('saveName');
+  var name = el.value.trim() || ('location '+(saved.length+1));
+  var angles = JOINTS.map(function(_,i){ return parseFloat(document.getElementById('jn'+i).value)||0; });
   var speed  = parseInt(document.getElementById('speedSlider').value);
-  saved.push({ name: name, angles: angles, speed: speed });
-  persist(); el.value = ''; renderSaved();
-  log('saved "' + name + '"', 'sys');
+  saved.push({ name:name, angles:angles, speed:speed });
+  persist(); el.value=''; renderSaved();
+  log('saved "'+name+'"','sys');
 }
 
 function recall(i) {
   var loc = saved[i];
-  if (!loc) { log('location ' + i + ' not found', 'err'); return; }
-  JOINTS.forEach(function(j, k) {
-    document.getElementById('js' + k).value = Math.max(j.min, Math.min(j.max, loc.angles[k]));
-    document.getElementById('jn' + k).value = parseFloat(loc.angles[k]).toFixed(1);
+  if (!loc) { log('location not found','err'); return; }
+  JOINTS.forEach(function(j,k){
+    document.getElementById('js'+k).value = Math.max(j.min, Math.min(j.max, loc.angles[k]));
+    document.getElementById('jn'+k).value = parseFloat(loc.angles[k]).toFixed(1);
   });
   document.getElementById('speedSlider').value = loc.speed;
   document.getElementById('speedNum').textContent = loc.speed;
-  log('recalling "' + loc.name + '"', 'sys');
-  txAngles(loc.angles, loc.speed);
+  log('recalling "'+loc.name+'"','sys');
+  send(frameSendAngles(loc.angles, loc.speed));
 }
 
 renderSaved();
 
 // ─────────────────────────────────────────
-// UI state
+// UI helpers
 // ─────────────────────────────────────────
 function setConn(c) {
-  document.getElementById('dot').className          = 'dot' + (c ? ' live' : '');
-  document.getElementById('connLabel').textContent  = c ? 'connected' : 'disconnected';
-  document.getElementById('connectBtn').disabled    = c;
+  document.getElementById('dot').className = 'dot'+(c?' live':'');
+  document.getElementById('connLabel').textContent = c ? 'connected' : 'disconnected';
+  document.getElementById('connectBtn').disabled = c;
   document.getElementById('disconnectBtn').disabled = !c;
-  ['pingBtn','sendBtn','homeBtn','readBtn','motorsOnBtn','motorsOffBtn'].forEach(function(id) {
+  ['pingBtn','sendBtn','homeBtn','readBtn','motorsOnBtn','motorsOffBtn'].forEach(function(id){
     document.getElementById(id).disabled = !c;
   });
 }
 
 function log(msg, type) {
-  type = type || 'sys';
+  type = type||'sys';
   var term = document.getElementById('terminal');
   var line = document.createElement('div');
-  line.className = 'term-line ' + type;
-  var ts = document.createElement('span'); ts.className = 'term-time';
+  line.className = 'term-line '+type;
+  var ts = document.createElement('span'); ts.className='term-time';
   ts.textContent = new Date().toTimeString().slice(0,8);
-  var ms = document.createElement('span'); ms.className = 'term-text';
+  var ms = document.createElement('span'); ms.className='term-text';
   ms.textContent = msg;
   line.appendChild(ts); line.appendChild(ms);
   term.appendChild(line);
   term.scrollTop = term.scrollHeight;
 }
 
-function clearLog() { document.getElementById('terminal').innerHTML = ''; }
+function clearLog() { document.getElementById('terminal').innerHTML=''; }
 </script>
 </body>
 </html>
