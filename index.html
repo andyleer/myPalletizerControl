@@ -3,846 +3,480 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>myPalletizer Control</title>
-<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+<title>myPalletizer 260</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #0a0c10;
-    --panel: #0f1318;
-    --border: #1e2830;
-    --accent: #00e5ff;
-    --accent2: #ff6b35;
-    --accent3: #39ff14;
-    --text: #c8d8e8;
-    --dim: #4a5a6a;
-    --danger: #ff3b3b;
-    --glow: 0 0 12px rgba(0,229,255,0.4);
-    --glow2: 0 0 12px rgba(57,255,20,0.4);
-  }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #f7f6f3;
+  --white: #ffffff;
+  --border: #e0ddd8;
+  --border-mid: #ccc9c2;
+  --text: #1a1a1a;
+  --muted: #999;
+  --accent: #1a6b3c;
+  --accent-bg: #edf5f0;
+  --danger: #c0392b;
+  --mono: 'IBM Plex Mono', monospace;
+}
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Share Tech Mono', monospace;
-    min-height: 100vh;
-    overflow-x: hidden;
-    background-image:
-      linear-gradient(rgba(0,229,255,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,229,255,0.03) 1px, transparent 1px);
-    background-size: 40px 40px;
-  }
+html, body {
+  min-height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 13px;
+  -webkit-font-smoothing: antialiased;
+}
 
-  /* HEADER */
-  header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 16px 28px;
-    border-bottom: 1px solid var(--border);
-    background: rgba(15,19,24,0.95);
-    backdrop-filter: blur(10px);
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
+.page {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 48px 24px 64px;
+}
 
-  .logo {
-    font-family: 'Orbitron', sans-serif;
-    font-weight: 900;
-    font-size: 1.1rem;
-    color: var(--accent);
-    letter-spacing: 3px;
-    text-shadow: var(--glow);
-  }
+/* header */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 40px;
+}
+.title { font-size: 15px; font-weight: 500; letter-spacing: -.01em; }
+.title span { color: var(--accent); }
+.status {
+  display: flex; align-items: center; gap: 7px;
+  font-size: 11px; color: var(--muted);
+}
+.dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--border-mid);
+  transition: background .3s;
+}
+.dot.live { background: var(--accent); }
 
-  .logo span { color: var(--accent2); }
+/* sections */
+.section { margin-bottom: 36px; }
+.label {
+  font-size: 10px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 14px;
+}
 
-  .status-bar {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    font-size: 0.75rem;
-  }
+/* connect */
+.row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
 
-  .status-dot {
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    background: var(--danger);
-    box-shadow: 0 0 8px var(--danger);
-    transition: all 0.3s;
-  }
-  .status-dot.connected {
-    background: var(--accent3);
-    box-shadow: var(--glow2);
-  }
+/* base controls */
+select, input[type="text"], input[type="number"] {
+  height: 34px;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  background: var(--white);
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 12px;
+  padding: 0 10px;
+  outline: none;
+  transition: border-color .15s;
+  -webkit-appearance: none;
+}
+select:focus, input:focus { border-color: var(--accent); }
+select {
+  cursor: pointer;
+  padding-right: 26px;
+  background-image: url("data:image/svg+xml,%3Csvg width='9' height='5' viewBox='0 0 9 5' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l3.5 3L8 1' stroke='%23999' stroke-width='1.2' fill='none'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 9px center;
+  background-color: var(--white);
+}
 
-  #status-text { color: var(--dim); letter-spacing: 1px; }
+button {
+  height: 34px; padding: 0 14px;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  background: var(--white);
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 12px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: border-color .15s, background .15s;
+}
+button:hover { border-color: var(--border-mid); background: var(--bg); }
+button:active { transform: scale(0.98); }
+button:disabled { opacity: .3; cursor: not-allowed; transform: none; }
 
-  /* CONNECT PANEL */
-  .connect-panel {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 12px 28px;
-    background: rgba(0,229,255,0.03);
-    border-bottom: 1px solid var(--border);
-    flex-wrap: wrap;
-  }
+button.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+button.primary:hover { background: #155732; border-color: #155732; }
 
-  select, input[type=number] {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    color: var(--text);
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.8rem;
-    padding: 7px 12px;
-    border-radius: 3px;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-  select:focus, input[type=number]:focus {
-    border-color: var(--accent);
-  }
+button.ghost {
+  background: transparent;
+  border-color: transparent;
+  color: var(--muted);
+  padding: 0 8px;
+}
+button.ghost:hover { color: var(--text); background: transparent; border-color: transparent; }
 
-  .label { color: var(--dim); font-size: 0.75rem; letter-spacing: 1px; }
+/* joints */
+.joints { display: flex; flex-direction: column; gap: 12px; }
 
-  btn, .btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 7px 16px;
-    border: 1px solid var(--accent);
-    background: transparent;
-    color: var(--accent);
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.8rem;
-    letter-spacing: 1px;
-    cursor: pointer;
-    border-radius: 3px;
-    transition: all 0.2s;
-  }
-  .btn:hover {
-    background: var(--accent);
-    color: var(--bg);
-    box-shadow: var(--glow);
-  }
-  .btn.danger { border-color: var(--danger); color: var(--danger); }
-  .btn.danger:hover { background: var(--danger); color: #fff; box-shadow: 0 0 12px rgba(255,59,59,0.5); }
-  .btn.success { border-color: var(--accent3); color: var(--accent3); }
-  .btn.success:hover { background: var(--accent3); color: var(--bg); box-shadow: var(--glow2); }
-  .btn:disabled { opacity: 0.3; cursor: not-allowed; }
-  .btn:disabled:hover { background: transparent; box-shadow: none; color: inherit; }
+.joint {
+  display: grid;
+  grid-template-columns: 28px 1fr 80px;
+  gap: 12px;
+  align-items: center;
+}
+.jname { font-size: 11px; color: var(--muted); font-weight: 500; }
 
-  /* MAIN LAYOUT */
-  .main {
-    display: grid;
-    grid-template-columns: 1fr 340px;
-    gap: 0;
-    height: calc(100vh - 110px);
-  }
+input[type="range"] {
+  -webkit-appearance: none; appearance: none;
+  height: 1px; background: var(--border-mid);
+  border: none; padding: 0; outline: none;
+  cursor: pointer; width: 100%;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: var(--white);
+  border: 1.5px solid var(--accent);
+  cursor: pointer;
+  transition: transform .1s;
+}
+input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.15); }
+input[type="range"]::-moz-range-thumb {
+  width: 16px; height: 16px; border-radius: 50%;
+  background: var(--white); border: 1.5px solid var(--accent);
+}
 
-  .left-col {
-    padding: 20px;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
+.jval {
+  display: flex; align-items: center; gap: 4px;
+  justify-content: flex-end;
+}
+.jval input[type="number"] {
+  width: 60px; text-align: right; padding: 0 6px; height: 30px;
+}
+.jdeg { font-size: 11px; color: var(--muted); }
 
-  .right-col {
-    border-left: 1px solid var(--border);
-    display: flex;
-    flex-direction: column;
-  }
+/* speed */
+.speed-row {
+  display: grid;
+  grid-template-columns: 1fr 40px;
+  gap: 12px;
+  align-items: center;
+}
+.speed-num { font-size: 12px; text-align: right; }
 
-  /* PANELS */
-  .panel {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    overflow: hidden;
-  }
+/* divider */
+hr { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
 
-  .panel-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 16px;
-    border-bottom: 1px solid var(--border);
-    background: rgba(0,229,255,0.04);
-  }
+/* saved locations */
+.saved-list { display: flex; flex-direction: column; gap: 6px; }
 
-  .panel-title {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 0.65rem;
-    letter-spacing: 3px;
-    color: var(--accent);
-  }
+.saved-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  transition: border-color .15s;
+}
+.saved-item:hover { border-color: var(--border-mid); }
+.saved-name { flex: 1; font-size: 12px; }
+.saved-angles { font-size: 11px; color: var(--muted); flex: 2; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
-  .panel-body { padding: 16px; }
+.save-row { display: flex; gap: 8px; margin-top: 10px; }
+.save-row input[type="text"] { flex: 1; }
 
-  /* JOINT CONTROLS */
-  .joint-grid {
-    display: grid;
-    gap: 14px;
-  }
+/* terminal */
+.term {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 10px 12px;
+  height: 160px;
+  overflow-y: auto;
+  display: flex; flex-direction: column; gap: 1px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+.term-line { display: flex; gap: 10px; font-size: 11px; line-height: 1.8; }
+.term-time { color: var(--muted); flex-shrink: 0; }
+.tx .term-text { color: var(--accent); }
+.rx .term-text { color: var(--text); }
+.err .term-text { color: var(--danger); }
+.sys .term-text { color: var(--muted); }
 
-  .joint-row {
-    display: grid;
-    grid-template-columns: 70px 1fr 80px 90px;
-    align-items: center;
-    gap: 10px;
-  }
+.raw-row { display: flex; gap: 8px; margin-top: 10px; }
+.raw-row input { flex: 1; }
 
-  .joint-label {
-    font-size: 0.75rem;
-    color: var(--dim);
-    letter-spacing: 1px;
-  }
-
-  .joint-label strong { color: var(--accent); display: block; font-size: 0.85rem; }
-
-  input[type=range] {
-    -webkit-appearance: none;
-    width: 100%;
-    height: 4px;
-    background: var(--border);
-    border-radius: 2px;
-    outline: none;
-    cursor: pointer;
-  }
-  input[type=range]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 14px; height: 14px;
-    border-radius: 50%;
-    background: var(--accent);
-    box-shadow: var(--glow);
-    cursor: pointer;
-    transition: transform 0.1s;
-  }
-  input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.3); }
-
-  .joint-val {
-    text-align: right;
-    font-size: 0.9rem;
-    color: var(--accent);
-    min-width: 55px;
-  }
-
-  .joint-btns { display: flex; gap: 4px; }
-  .joint-btns .btn { padding: 4px 8px; font-size: 0.75rem; }
-
-  /* COORD CONTROLS */
-  .coord-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 12px;
-  }
-
-  .coord-input-group { display: flex; flex-direction: column; gap: 6px; }
-  .coord-input-group .label { font-size: 0.7rem; }
-  .coord-input-group input {
-    width: 100%;
-    text-align: center;
-    font-size: 0.9rem;
-  }
-
-  .coord-actions {
-    display: flex;
-    gap: 8px;
-    margin-top: 12px;
-    flex-wrap: wrap;
-  }
-
-  /* QUICK ACTIONS */
-  .quick-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-  }
-
-  .quick-btn {
-    padding: 12px;
-    border: 1px solid var(--border);
-    background: transparent;
-    color: var(--text);
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.75rem;
-    letter-spacing: 1px;
-    cursor: pointer;
-    border-radius: 3px;
-    transition: all 0.2s;
-    text-align: center;
-  }
-  .quick-btn:hover { border-color: var(--accent2); color: var(--accent2); background: rgba(255,107,53,0.05); }
-  .quick-btn.active { border-color: var(--accent2); color: var(--accent2); background: rgba(255,107,53,0.1); }
-
-  /* SPEED */
-  .speed-row {
-    display: grid;
-    grid-template-columns: 60px 1fr 50px;
-    align-items: center;
-    gap: 12px;
-  }
-
-  /* GRIPPER */
-  .gripper-visual {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px 0;
-    gap: 0;
-  }
-
-  .gripper-finger {
-    width: 18px;
-    height: 50px;
-    background: var(--border);
-    border: 1px solid var(--dim);
-    border-radius: 3px;
-    transition: all 0.4s ease;
-  }
-
-  .gripper-gap {
-    width: 30px;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.65rem;
-    color: var(--dim);
-    transition: width 0.4s ease;
-  }
-
-  .gripper-finger.active { background: rgba(0,229,255,0.2); border-color: var(--accent); }
-  .gripper-btns { display: flex; gap: 8px; justify-content: center; }
-
-  /* TERMINAL */
-  .terminal {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-  }
-
-  #log {
-    flex: 1;
-    padding: 12px;
-    overflow-y: auto;
-    font-size: 0.75rem;
-    line-height: 1.6;
-    max-height: 300px;
-    min-height: 150px;
-  }
-
-  .log-line { margin-bottom: 2px; }
-  .log-line.tx { color: var(--accent); }
-  .log-line.rx { color: var(--accent3); }
-  .log-line.info { color: var(--dim); }
-  .log-line.err { color: var(--danger); }
-  .log-prefix { color: var(--dim); margin-right: 6px; }
-
-  .cmd-row {
-    display: flex;
-    border-top: 1px solid var(--border);
-    padding: 8px;
-    gap: 6px;
-  }
-
-  #cmd-input {
-    flex: 1;
-    background: transparent;
-    border: 1px solid var(--border);
-    color: var(--accent);
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.8rem;
-    padding: 6px 10px;
-    border-radius: 3px;
-    outline: none;
-  }
-  #cmd-input:focus { border-color: var(--accent); }
-  #cmd-input::placeholder { color: var(--dim); }
-
-  /* ROBOT VIZ */
-  .robot-viz {
-    padding: 16px;
-    display: flex;
-    justify-content: center;
-  }
-
-  svg.arm { overflow: visible; }
-
-  /* SCROLLBAR */
-  ::-webkit-scrollbar { width: 4px; }
-  ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
-  ::-webkit-scrollbar-thumb:hover { background: var(--dim); }
-
-  /* BLINK ANIMATION */
-  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
-  .blink { animation: blink 1s infinite; }
-
-  /* PULSE */
-  @keyframes pulse-ring {
-    0% { transform: scale(1); opacity: 0.8; }
-    100% { transform: scale(1.8); opacity: 0; }
-  }
-
-  .no-serial-warning {
-    background: rgba(255,59,59,0.1);
-    border: 1px solid rgba(255,59,59,0.3);
-    border-radius: 4px;
-    padding: 10px 16px;
-    font-size: 0.75rem;
-    color: var(--danger);
-    display: none;
-  }
-
-  @media (max-width: 900px) {
-    .main { grid-template-columns: 1fr; }
-    .right-col { border-left: none; border-top: 1px solid var(--border); }
-  }
+/* empty state */
+.empty { font-size: 12px; color: var(--muted); padding: 6px 0; }
 </style>
 </head>
 <body>
+<div class="page">
 
-<header>
-  <div class="logo">MY<span>PALLETIZER</span> <span style="color:var(--dim);font-weight:400;font-size:0.7rem;margin-left:8px">CTRL PANEL</span></div>
-  <div class="status-bar">
-    <div class="status-dot" id="status-dot"></div>
-    <span id="status-text">DISCONNECTED</span>
-    <span style="color:var(--dim)">|</span>
-    <span id="port-info" style="color:var(--dim);font-size:0.7rem">NO PORT</span>
-  </div>
-</header>
+  <header>
+    <div class="title">myPalletizer <span>260</span></div>
+    <div class="status">
+      <div class="dot" id="dot"></div>
+      <span id="connLabel">disconnected</span>
+    </div>
+  </header>
 
-<div class="connect-panel">
-  <span class="label">BAUD:</span>
-  <select id="baud-rate">
-    <option value="9600">9600</option>
-    <option value="19200">19200</option>
-    <option value="38400">38400</option>
-    <option value="57600">57600</option>
-    <option value="115200" selected>115200</option>
-  </select>
-  <button class="btn" id="connect-btn" onclick="connectSerial()">⚡ CONNECT</button>
-  <button class="btn danger" id="disconnect-btn" onclick="disconnectSerial()" disabled>✕ DISCONNECT</button>
-  <div class="no-serial-warning" id="no-serial-warn">
-    ⚠ Web Serial API not supported. Use Chrome or Edge browser.
+  <!-- connect -->
+  <div class="section">
+    <div class="label">Connection</div>
+    <div class="row">
+      <select id="baudSelect">
+        <option value="115200" selected>115200 baud</option>
+        <option value="57600">57600 baud</option>
+        <option value="9600">9600 baud</option>
+      </select>
+      <button class="primary" id="connectBtn" onclick="connectSerial()">Connect</button>
+      <button id="disconnectBtn" onclick="disconnectSerial()" disabled>Disconnect</button>
+    </div>
   </div>
+
+  <hr>
+
+  <!-- joints -->
+  <div class="section">
+    <div class="label">Joints</div>
+    <div class="joints" id="jointGrid"></div>
+
+    <div style="margin-top:18px">
+      <div class="label" style="margin-bottom:10px">Speed</div>
+      <div class="speed-row">
+        <input type="range" id="speedSlider" min="1" max="100" value="50"
+          oninput="document.getElementById('speedNum').textContent=this.value">
+        <div class="speed-num" id="speedNum">50</div>
+      </div>
+    </div>
+
+    <div class="row" style="margin-top:18px">
+      <button class="primary" onclick="sendAngles()">Send</button>
+      <button onclick="goHome()">Home</button>
+      <button onclick="sendCmd('get_angles()')">Read angles</button>
+      <button onclick="sendCmd('release_all_servos()')">Release</button>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- saved locations -->
+  <div class="section">
+    <div class="label">Saved locations</div>
+    <div class="saved-list" id="savedList"></div>
+    <div class="save-row">
+      <input type="text" id="saveName" placeholder="location name" onkeydown="if(event.key==='Enter')saveLocation()">
+      <button onclick="saveLocation()">Save current</button>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- terminal -->
+  <div class="section">
+    <div class="label">Terminal</div>
+    <div class="term" id="terminal"></div>
+    <div class="raw-row">
+      <input type="text" id="rawCmd" placeholder="raw command"
+        onkeydown="if(event.key==='Enter')sendRaw()">
+      <button onclick="sendRaw()">Send</button>
+      <button class="ghost" onclick="clearLog()">Clear</button>
+    </div>
+  </div>
+
 </div>
-
-<div class="main">
-  <div class="left-col">
-
-    <!-- JOINT CONTROL -->
-    <div class="panel">
-      <div class="panel-header">
-        <span class="panel-title">JOINT CONTROL</span>
-        <button class="btn" style="font-size:0.7rem;padding:4px 10px" onclick="sendAllJoints()">SEND ALL</button>
-      </div>
-      <div class="panel-body">
-        <div class="joint-grid" id="joint-grid"></div>
-      </div>
-    </div>
-
-    <!-- COORDINATE CONTROL -->
-    <div class="panel">
-      <div class="panel-header">
-        <span class="panel-title">COORDINATE CONTROL</span>
-      </div>
-      <div class="panel-body">
-        <div class="coord-grid">
-          <div class="coord-input-group">
-            <span class="label">X (mm)</span>
-            <input type="number" id="coord-x" value="0" step="5">
-          </div>
-          <div class="coord-input-group">
-            <span class="label">Y (mm)</span>
-            <input type="number" id="coord-y" value="0" step="5">
-          </div>
-          <div class="coord-input-group">
-            <span class="label">Z (mm)</span>
-            <input type="number" id="coord-z" value="150" step="5">
-          </div>
-          <div class="coord-input-group">
-            <span class="label">RX (°)</span>
-            <input type="number" id="coord-rx" value="0" step="1">
-          </div>
-          <div class="coord-input-group">
-            <span class="label">RY (°)</span>
-            <input type="number" id="coord-ry" value="0" step="1">
-          </div>
-          <div class="coord-input-group">
-            <span class="label">RZ (°)</span>
-            <input type="number" id="coord-rz" value="0" step="1">
-          </div>
-        </div>
-        <div class="coord-actions">
-          <button class="btn" onclick="sendCoords()">▶ MOVE TO COORDS</button>
-          <button class="btn" onclick="getCoords()">↺ GET CURRENT</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- SPEED -->
-    <div class="panel">
-      <div class="panel-header"><span class="panel-title">SPEED & ACCELERATION</span></div>
-      <div class="panel-body" style="display:flex;flex-direction:column;gap:12px">
-        <div class="speed-row">
-          <span class="label">SPEED</span>
-          <input type="range" id="speed-slider" min="1" max="100" value="50" oninput="document.getElementById('speed-val').textContent=this.value">
-          <span class="joint-val" id="speed-val">50</span>
-        </div>
-        <div class="speed-row">
-          <span class="label">ACCEL</span>
-          <input type="range" id="accel-slider" min="1" max="100" value="50" oninput="document.getElementById('accel-val').textContent=this.value">
-          <span class="joint-val" id="accel-val">50</span>
-        </div>
-        <button class="btn" style="width:fit-content" onclick="sendSpeed()">APPLY SPEED</button>
-      </div>
-    </div>
-
-    <!-- QUICK ACTIONS -->
-    <div class="panel">
-      <div class="panel-header"><span class="panel-title">QUICK ACTIONS</span></div>
-      <div class="panel-body">
-        <div class="quick-grid">
-          <button class="quick-btn" onclick="sendCmd('set_zero_position()')">◎ SET ZERO</button>
-          <button class="quick-btn" onclick="quickHome()">⌂ GO HOME</button>
-          <button class="quick-btn" onclick="sendCmd('release_all_servos()')">🔓 RELEASE SERVOS</button>
-          <button class="quick-btn" onclick="sendCmd('power_on()')">⚡ POWER ON</button>
-          <button class="quick-btn" onclick="getAngles()">↺ GET ANGLES</button>
-          <button class="quick-btn" onclick="sendCmd('stop()')">⏹ STOP</button>
-          <button class="quick-btn" onclick="sendCmd('is_controller_connected()')">? PING</button>
-          <button class="quick-btn" onclick="sendCmd('get_system_version()')">ℹ VERSION</button>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <div class="right-col">
-
-    <!-- ROBOT SVG VIZ -->
-    <div class="panel-header" style="border-bottom:1px solid var(--border)">
-      <span class="panel-title">ARM VISUALIZATION</span>
-    </div>
-    <div class="robot-viz">
-      <svg class="arm" width="200" height="220" viewBox="0 0 200 220">
-        <defs>
-          <filter id="glow-filter">
-            <feGaussianBlur stdDeviation="2" result="blur"/>
-            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-          </filter>
-        </defs>
-        <!-- Base -->
-        <rect x="70" y="190" width="60" height="14" rx="3" fill="#1e2830" stroke="#2a3a4a" stroke-width="1"/>
-        <rect x="80" y="178" width="40" height="14" rx="2" fill="#162030" stroke="#2a3a4a" stroke-width="1"/>
-        <!-- Arm segments - will be animated by JS -->
-        <g id="arm-viz" filter="url(#glow-filter)">
-          <line id="seg1" x1="100" y1="178" x2="100" y2="120" stroke="#00e5ff" stroke-width="4" stroke-linecap="round" opacity="0.8"/>
-          <circle cx="100" cy="120" r="5" fill="#00e5ff" opacity="0.9"/>
-          <line id="seg2" x1="100" y1="120" x2="130" y2="80" stroke="#00e5ff" stroke-width="3" stroke-linecap="round" opacity="0.8"/>
-          <circle cx="130" cy="80" r="4" fill="#00e5ff" opacity="0.9"/>
-          <line id="seg3" x1="130" y1="80" x2="130" y2="45" stroke="#ff6b35" stroke-width="3" stroke-linecap="round" opacity="0.8"/>
-          <circle id="tcp" cx="130" cy="45" r="6" fill="none" stroke="#39ff14" stroke-width="2" opacity="0.9"/>
-          <line x1="124" y1="45" x2="136" y2="45" stroke="#39ff14" stroke-width="1.5" opacity="0.9"/>
-          <line x1="130" y1="39" x2="130" y2="51" stroke="#39ff14" stroke-width="1.5" opacity="0.9"/>
-        </g>
-        <!-- Grid lines -->
-        <line x1="10" y1="192" x2="190" y2="192" stroke="#1e2830" stroke-width="1"/>
-        <text x="195" y="196" fill="#2a3a4a" font-size="8" font-family="Share Tech Mono">Z=0</text>
-      </svg>
-    </div>
-
-    <!-- GRIPPER -->
-    <div class="panel-header" style="border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
-      <span class="panel-title">GRIPPER</span>
-    </div>
-    <div style="padding:12px">
-      <div class="gripper-visual">
-        <div class="gripper-finger" id="gf-left"></div>
-        <div class="gripper-gap" id="gripper-gap">●</div>
-        <div class="gripper-finger" id="gf-right"></div>
-      </div>
-      <div class="gripper-btns">
-        <button class="btn success" onclick="gripperOpen()">◁▷ OPEN</button>
-        <button class="btn danger" onclick="gripperClose()">▷◁ CLOSE</button>
-      </div>
-      <div style="margin-top:10px;display:flex;align-items:center;gap:8px">
-        <span class="label" style="white-space:nowrap">PUMP:</span>
-        <button class="btn" style="flex:1;font-size:0.72rem" onclick="pumpOn()">ON</button>
-        <button class="btn danger" style="flex:1;font-size:0.72rem" onclick="pumpOff()">OFF</button>
-      </div>
-    </div>
-
-    <!-- TERMINAL -->
-    <div class="panel-header" style="border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
-      <span class="panel-title">SERIAL TERMINAL</span>
-      <button class="btn" style="font-size:0.65rem;padding:3px 8px" onclick="clearLog()">CLEAR</button>
-    </div>
-    <div class="terminal">
-      <div id="log"></div>
-      <div class="cmd-row">
-        <input type="text" id="cmd-input" placeholder="raw command..." onkeydown="if(event.key==='Enter')sendRaw()">
-        <button class="btn" onclick="sendRaw()" style="padding:6px 12px">▶</button>
-      </div>
-    </div>
-
-  </div>
-</div>
-
 <script>
-// ─── STATE ──────────────────────────────────────────────────────────────────
-let port = null;
-let writer = null;
-let reader = null;
-let readLoop = null;
-let isConnected = false;
+let port = null, reader = null, writer = null, readBuf = '';
 
-const JOINT_LIMITS = [
-  { name: 'J1', min: -160, max: 160 },
-  { name: 'J2', min: -90,  max: 10  },
-  { name: 'J3', min: -70,  max: 90  },
-  { name: 'J4', min: -170, max: 170 },
+const JOINTS = [
+  { name: 'J1', min: -165, max: 165 },
+  { name: 'J2', min: -90,  max: 90  },
+  { name: 'J3', min: -50,  max: 90  },
+  { name: 'J4', min: -165, max: 165 },
 ];
 
-const jointAngles = [0, 0, 0, 0];
+// ── build joint rows ──
+const jGrid = document.getElementById('jointGrid');
+JOINTS.forEach((j, i) => {
+  const row = document.createElement('div');
+  row.className = 'joint';
+  row.innerHTML = `
+    <span class="jname">${j.name}</span>
+    <input type="range" id="js${i}" min="${j.min}" max="${j.max}" value="0" step="0.5">
+    <div class="jval">
+      <input type="number" id="jn${i}" min="${j.min}" max="${j.max}" value="0" step="0.5">
+      <span class="jdeg">°</span>
+    </div>`;
+  jGrid.appendChild(row);
 
-// ─── INIT ────────────────────────────────────────────────────────────────────
-window.onload = () => {
-  if (!('serial' in navigator)) {
-    document.getElementById('no-serial-warn').style.display = 'block';
-    document.getElementById('connect-btn').disabled = true;
-    log('Web Serial API not available. Use Chrome/Edge.', 'err');
+  const slider = document.getElementById(`js${i}`);
+  const num    = document.getElementById(`jn${i}`);
+  slider.addEventListener('input', () => { num.value = parseFloat(slider.value).toFixed(1); });
+  num.addEventListener('input',    () => { slider.value = num.value; });
+});
+
+// ── saved locations (localStorage) ──
+let saved = JSON.parse(localStorage.getItem('mp260_locs') || '[]');
+
+function renderSaved() {
+  const list = document.getElementById('savedList');
+  list.innerHTML = '';
+  if (!saved.length) {
+    list.innerHTML = '<div class="empty">No saved locations yet.</div>';
+    return;
   }
-  buildJointControls();
-  log('myPalletizer Control Panel ready.', 'info');
-  log('Connect to your robot via serial port.', 'info');
-};
-
-// ─── JOINT UI ────────────────────────────────────────────────────────────────
-function buildJointControls() {
-  const grid = document.getElementById('joint-grid');
-  JOINT_LIMITS.forEach((j, i) => {
-    const row = document.createElement('div');
-    row.className = 'joint-row';
-    row.innerHTML = `
-      <div class="joint-label"><strong>${j.name}</strong>${j.min}° / ${j.max}°</div>
-      <input type="range" min="${j.min}" max="${j.max}" value="0" id="j${i}-slider"
-        oninput="updateJoint(${i}, this.value)">
-      <div class="joint-val" id="j${i}-val">0°</div>
-      <div class="joint-btns">
-        <button class="btn" onclick="nudgeJoint(${i}, -5)" style="border-color:var(--dim);color:var(--dim)">−5</button>
-        <button class="btn" onclick="nudgeJoint(${i}, 5)" style="border-color:var(--dim);color:var(--dim)">+5</button>
-      </div>
-    `;
-    grid.appendChild(row);
+  saved.forEach((loc, i) => {
+    const item = document.createElement('div');
+    item.className = 'saved-item';
+    item.innerHTML = `
+      <span class="saved-name">${esc(loc.name)}</span>
+      <span class="saved-angles">${loc.angles.map(a => a.toFixed(1) + '°').join('  ')}</span>
+      <button onclick="recallLocation(${i})">Go</button>
+      <button class="ghost" onclick="deleteLocation(${i})" title="Delete">✕</button>`;
+    list.appendChild(item);
   });
 }
 
-function updateJoint(i, val) {
-  jointAngles[i] = parseFloat(val);
-  document.getElementById(`j${i}-val`).textContent = parseFloat(val).toFixed(1) + '°';
-  updateArmViz();
+function saveLocation() {
+  const nameEl = document.getElementById('saveName');
+  const name = nameEl.value.trim() || `location ${saved.length + 1}`;
+  const angles = JOINTS.map((_, i) => parseFloat(document.getElementById(`jn${i}`).value || 0));
+  const speed  = parseInt(document.getElementById('speedSlider').value);
+  saved.push({ name, angles, speed });
+  localStorage.setItem('mp260_locs', JSON.stringify(saved));
+  nameEl.value = '';
+  renderSaved();
+  log(`saved "${name}"`, 'sys');
 }
 
-function nudgeJoint(i, delta) {
-  const slider = document.getElementById(`j${i}-slider`);
-  const newVal = Math.max(JOINT_LIMITS[i].min, Math.min(JOINT_LIMITS[i].max, jointAngles[i] + delta));
-  slider.value = newVal;
-  updateJoint(i, newVal);
+function recallLocation(i) {
+  const loc = saved[i];
+  JOINTS.forEach((_, j) => {
+    document.getElementById(`js${j}`).value = loc.angles[j];
+    document.getElementById(`jn${j}`).value = loc.angles[j].toFixed(1);
+  });
+  document.getElementById('speedSlider').value = loc.speed;
+  document.getElementById('speedNum').textContent = loc.speed;
+  sendCmd(`send_angles([${loc.angles.join(',')}],${loc.speed})`);
 }
 
-// ─── ARM VISUALIZATION ───────────────────────────────────────────────────────
-function updateArmViz() {
-  const base = { x: 100, y: 178 };
-  const len1 = 58, len2 = 48, len3 = 35;
-
-  const a1 = jointAngles[0] * Math.PI / 180;
-  const a2 = (jointAngles[1] - 90) * Math.PI / 180;
-  const a3 = jointAngles[2] * Math.PI / 180;
-
-  const j1x = base.x + Math.sin(a1) * len1;
-  const j1y = base.y - Math.cos(a1) * len1;
-
-  const a12 = a1 + a2;
-  const j2x = j1x + Math.sin(a12) * len2;
-  const j2y = j1y - Math.cos(a12) * len2;
-
-  const a123 = a12 + a3;
-  const tcpx = j2x + Math.sin(a123) * len3;
-  const tcpy = j2y - Math.cos(a123) * len3;
-
-  document.getElementById('seg1').setAttribute('x1', base.x);
-  document.getElementById('seg1').setAttribute('y1', base.y);
-  document.getElementById('seg1').setAttribute('x2', j1x.toFixed(1));
-  document.getElementById('seg1').setAttribute('y2', j1y.toFixed(1));
-
-  document.getElementById('seg2').setAttribute('x1', j1x.toFixed(1));
-  document.getElementById('seg2').setAttribute('y1', j1y.toFixed(1));
-  document.getElementById('seg2').setAttribute('x2', j2x.toFixed(1));
-  document.getElementById('seg2').setAttribute('y2', j2y.toFixed(1));
-
-  document.getElementById('seg3').setAttribute('x1', j2x.toFixed(1));
-  document.getElementById('seg3').setAttribute('y1', j2y.toFixed(1));
-  document.getElementById('seg3').setAttribute('x2', tcpx.toFixed(1));
-  document.getElementById('seg3').setAttribute('y2', tcpy.toFixed(1));
-
-  const tcp = document.getElementById('tcp');
-  tcp.setAttribute('cx', tcpx.toFixed(1));
-  tcp.setAttribute('cy', tcpy.toFixed(1));
+function deleteLocation(i) {
+  const name = saved[i].name;
+  saved.splice(i, 1);
+  localStorage.setItem('mp260_locs', JSON.stringify(saved));
+  renderSaved();
+  log(`deleted "${name}"`, 'sys');
 }
 
-// ─── SERIAL ──────────────────────────────────────────────────────────────────
+renderSaved();
+
+// ── serial ──
 async function connectSerial() {
+  if (!('serial' in navigator)) {
+    log('Web Serial not available — use Chrome or Edge 89+', 'err'); return;
+  }
   try {
     port = await navigator.serial.requestPort();
-    const baud = parseInt(document.getElementById('baud-rate').value);
+    const baud = parseInt(document.getElementById('baudSelect').value);
     await port.open({ baudRate: baud });
-
     writer = port.writable.getWriter();
     reader = port.readable.getReader();
-
-    isConnected = true;
-    updateConnectUI(true);
-    log(`Connected at ${baud} baud`, 'info');
-
-    readLoop = startReading();
-  } catch (e) {
-    log('Connection failed: ' + e.message, 'err');
+    setConnected(true);
+    log(`connected at ${baud} baud`, 'sys');
+    readLoop();
+  } catch(e) {
+    if (e.name !== 'NotFoundError') log(`connect: ${e.message}`, 'err');
   }
 }
 
 async function disconnectSerial() {
   try {
-    if (reader) { await reader.cancel(); reader = null; }
+    if (reader) { await reader.cancel(); reader.releaseLock(); reader = null; }
     if (writer) { writer.releaseLock(); writer = null; }
-    if (port) { await port.close(); port = null; }
-    isConnected = false;
-    updateConnectUI(false);
-    log('Disconnected.', 'info');
-  } catch (e) {
-    log('Disconnect error: ' + e.message, 'err');
-  }
+    if (port)   { await port.close(); port = null; }
+  } catch(e) { log(`disconnect: ${e.message}`, 'err'); }
+  setConnected(false);
+  log('disconnected', 'sys');
 }
 
-async function startReading() {
-  const decoder = new TextDecoder();
-  let buffer = '';
-  try {
-    while (true) {
+async function readLoop() {
+  while (reader) {
+    try {
       const { value, done } = await reader.read();
       if (done) break;
-      buffer += decoder.decode(value, { stream: true });
-      const lines = buffer.split('\n');
-      buffer = lines.pop();
-      lines.forEach(line => { if (line.trim()) log(line.trim(), 'rx'); });
+      readBuf += new TextDecoder().decode(value);
+      const lines = readBuf.split('\n');
+      readBuf = lines.pop();
+      lines.forEach(l => { if (l.trim()) log(l.trim(), 'rx'); });
+    } catch(e) {
+      if (reader) log(`read: ${e.message}`, 'err');
+      break;
     }
-  } catch (e) {
-    if (isConnected) log('Read error: ' + e.message, 'err');
   }
 }
 
 async function sendCmd(cmd) {
-  if (!isConnected || !writer) {
-    log('Not connected.', 'err'); return;
-  }
-  const encoded = new TextEncoder().encode(cmd + '\n');
+  if (!writer) { log('not connected', 'err'); return; }
   try {
-    await writer.write(encoded);
+    await writer.write(new TextEncoder().encode(cmd + '\r\n'));
     log(cmd, 'tx');
-  } catch (e) {
-    log('Send error: ' + e.message, 'err');
-  }
+  } catch(e) { log(`send: ${e.message}`, 'err'); }
 }
 
 function sendRaw() {
-  const input = document.getElementById('cmd-input');
-  const cmd = input.value.trim();
-  if (!cmd) return;
-  sendCmd(cmd);
-  input.value = '';
+  const el = document.getElementById('rawCmd');
+  const v = el.value.trim();
+  if (!v) return;
+  sendCmd(v); el.value = '';
 }
 
-// ─── ROBOT COMMANDS ──────────────────────────────────────────────────────────
-function sendAllJoints() {
-  const speed = document.getElementById('speed-slider').value;
-  const angles = jointAngles.map(a => a.toFixed(1)).join(', ');
-  sendCmd(`send_angles([${angles}], ${speed})`);
+function sendAngles() {
+  const spd = document.getElementById('speedSlider').value;
+  const a = JOINTS.map((_, i) => parseFloat(document.getElementById(`jn${i}`).value || 0));
+  sendCmd(`send_angles([${a.join(',')}],${spd})`);
 }
 
-function sendCoords() {
-  const x  = document.getElementById('coord-x').value;
-  const y  = document.getElementById('coord-y').value;
-  const z  = document.getElementById('coord-z').value;
-  const rx = document.getElementById('coord-rx').value;
-  const ry = document.getElementById('coord-ry').value;
-  const rz = document.getElementById('coord-rz').value;
-  const speed = document.getElementById('speed-slider').value;
-  sendCmd(`send_coords([${x}, ${y}, ${z}, ${rx}, ${ry}, ${rz}], ${speed}, 1)`);
-}
-
-function getCoords() { sendCmd('get_coords()'); }
-function getAngles()  { sendCmd('get_angles()'); }
-function sendSpeed()  {
-  const s = document.getElementById('speed-slider').value;
-  sendCmd(`set_speed(${s})`);
-}
-
-function quickHome() {
-  jointAngles.forEach((_, i) => {
-    jointAngles[i] = 0;
-    document.getElementById(`j${i}-slider`).value = 0;
-    document.getElementById(`j${i}-val`).textContent = '0°';
+function goHome() {
+  JOINTS.forEach((_, i) => {
+    document.getElementById(`js${i}`).value = 0;
+    document.getElementById(`jn${i}`).value = '0.0';
   });
-  updateArmViz();
-  sendCmd('send_angles([0, 0, 0, 0], 50)');
+  sendCmd('send_angles([0,0,0,0],30)');
 }
 
-function gripperOpen()  {
-  document.getElementById('gf-left').classList.remove('active');
-  document.getElementById('gf-right').classList.remove('active');
-  document.getElementById('gripper-gap').style.width = '50px';
-  sendCmd('set_gripper_state(0, 70)');
+function setConnected(c) {
+  document.getElementById('dot').className = 'dot' + (c ? ' live' : '');
+  document.getElementById('connLabel').textContent = c ? 'connected' : 'disconnected';
+  document.getElementById('connectBtn').disabled = c;
+  document.getElementById('disconnectBtn').disabled = !c;
 }
 
-function gripperClose() {
-  document.getElementById('gf-left').classList.add('active');
-  document.getElementById('gf-right').classList.add('active');
-  document.getElementById('gripper-gap').style.width = '8px';
-  sendCmd('set_gripper_state(1, 70)');
-}
-
-function pumpOn()  { sendCmd('set_basic_output(2, 0); set_basic_output(5, 0)'); }
-function pumpOff() { sendCmd('set_basic_output(2, 1); set_basic_output(5, 1)'); }
-
-// ─── UI HELPERS ──────────────────────────────────────────────────────────────
-function updateConnectUI(connected) {
-  document.getElementById('status-dot').className = 'status-dot' + (connected ? ' connected' : '');
-  document.getElementById('status-text').textContent = connected ? 'CONNECTED' : 'DISCONNECTED';
-  document.getElementById('connect-btn').disabled = connected;
-  document.getElementById('disconnect-btn').disabled = !connected;
-}
-
-function log(msg, type = 'info') {
-  const logEl = document.getElementById('log');
+function log(msg, type = 'sys') {
+  const t = document.getElementById('terminal');
   const line = document.createElement('div');
-  line.className = `log-line ${type}`;
-  const prefix = { tx: '▶ TX', rx: '◀ RX', info: '── ', err: '✕ ERR' }[type] || '   ';
-  const ts = new Date().toLocaleTimeString('en', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
-  line.innerHTML = `<span class="log-prefix">[${ts}] ${prefix}</span>${escHtml(msg)}`;
-  logEl.appendChild(line);
-  logEl.scrollTop = logEl.scrollHeight;
+  line.className = `term-line ${type}`;
+  const time = new Date().toTimeString().slice(0,8);
+  line.innerHTML = `<span class="term-time">${time}</span><span class="term-text">${esc(msg)}</span>`;
+  t.appendChild(line);
+  t.scrollTop = t.scrollHeight;
 }
-
-function clearLog() { document.getElementById('log').innerHTML = ''; }
-
-function escHtml(s) {
-  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-}
+function clearLog() { document.getElementById('terminal').innerHTML = ''; }
+function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 </script>
 </body>
 </html>
