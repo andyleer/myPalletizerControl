@@ -13,25 +13,49 @@
   --text: #1a1a1a; --muted: #999; --accent: #1a6b3c; --danger: #c0392b;
   --mono: 'IBM Plex Mono', 'Courier New', monospace;
 }
-html, body { min-height: 100%; background: var(--bg); color: var(--text); font-family: var(--mono); font-size: 13px; -webkit-font-smoothing: antialiased; }
-.page { max-width: 640px; margin: 0 auto; padding: 48px 24px 80px; }
+html, body {
+  min-height: 100%; background: var(--bg); color: var(--text);
+  font-family: var(--mono); font-size: 13px; -webkit-font-smoothing: antialiased;
+}
 
-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 40px; }
+/* two-column layout */
+.shell {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+}
+header {
+  display: flex; align-items: baseline; justify-content: space-between;
+  margin-bottom: 32px;
+}
 .title { font-size: 15px; font-weight: 500; }
 .title span { color: var(--accent); }
 .status { display: flex; align-items: center; gap: 7px; font-size: 11px; color: var(--muted); }
 .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border-mid); transition: background .3s; }
 .dot.live { background: var(--accent); }
 
-.section { margin-bottom: 36px; }
-.label { font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
-.row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
-hr { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
+.columns {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 32px;
+  align-items: start;
+}
 
+/* left column sections */
+.section { margin-bottom: 28px; }
+.label {
+  font-size: 10px; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 12px;
+}
+.row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+hr { border: none; border-top: 1px solid var(--border); margin: 22px 0; }
+
+/* inputs */
 select, input[type="text"], input[type="number"] {
-  height: 34px; border: 1px solid var(--border); border-radius: 3px; background: var(--white);
-  color: var(--text); font-family: var(--mono); font-size: 12px; padding: 0 10px;
-  outline: none; transition: border-color .15s; -webkit-appearance: none;
+  height: 34px; border: 1px solid var(--border); border-radius: 3px;
+  background: var(--white); color: var(--text); font-family: var(--mono);
+  font-size: 12px; padding: 0 10px; outline: none; transition: border-color .15s;
+  -webkit-appearance: none;
 }
 select:focus, input:focus { border-color: var(--accent); }
 select {
@@ -39,6 +63,8 @@ select {
   background-image: url("data:image/svg+xml,%3Csvg width='9' height='5' viewBox='0 0 9 5' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l3.5 3L8 1' stroke='%23999' stroke-width='1.2' fill='none'/%3E%3C/svg%3E");
   background-repeat: no-repeat; background-position: right 9px center; background-color: var(--white);
 }
+
+/* buttons */
 button {
   height: 34px; padding: 0 14px; border: 1px solid var(--border); border-radius: 3px;
   background: var(--white); color: var(--text); font-family: var(--mono); font-size: 12px;
@@ -51,150 +77,196 @@ button.primary { background: var(--accent); border-color: var(--accent); color: 
 button.primary:hover { background: #155732; border-color: #155732; }
 button.ghost { background: transparent; border-color: transparent; color: var(--muted); padding: 0 8px; }
 button.ghost:hover { color: var(--text); }
-button.amber { background: #fffbea; border-color: #d4a017; color: #7a5800; }
-button.amber:hover { background: #fff3c4; }
 
+/* joints */
 .joints { display: flex; flex-direction: column; gap: 14px; }
-.joint { display: grid; grid-template-columns: 100px 1fr 80px; gap: 12px; align-items: center; }
+.joint { display: grid; grid-template-columns: 100px 1fr 76px; gap: 12px; align-items: center; }
 .jlabel { display: flex; flex-direction: column; gap: 2px; }
-.jname { font-size: 11px; font-weight: 500; }
+.jname { font-size: 12px; font-weight: 500; }
 .jrange { font-size: 10px; color: var(--muted); }
 
 input[type="range"] {
-  -webkit-appearance: none; appearance: none; height: 1px; background: var(--border-mid);
-  border: none; padding: 0; outline: none; cursor: pointer; width: 100%;
+  -webkit-appearance: none; appearance: none; height: 1px;
+  background: var(--border-mid); border: none; padding: 0; outline: none;
+  cursor: pointer; width: 100%;
 }
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%;
   background: var(--white); border: 1.5px solid var(--accent); cursor: pointer; transition: transform .1s;
 }
 input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.15); }
-input[type="range"]::-moz-range-thumb { width: 16px; height: 16px; border-radius: 50%; background: var(--white); border: 1.5px solid var(--accent); }
-.jval { display: flex; align-items: center; gap: 4px; justify-content: flex-end; }
+input[type="range"]::-moz-range-thumb {
+  width: 16px; height: 16px; border-radius: 50%;
+  background: var(--white); border: 1.5px solid var(--accent);
+}
+.jval { display: flex; align-items: center; gap: 4px; }
 .jval input[type="number"] { width: 60px; text-align: right; padding: 0 6px; height: 30px; }
 .jdeg { font-size: 11px; color: var(--muted); }
 
-.speed-row { display: grid; grid-template-columns: 1fr 40px; gap: 12px; align-items: center; }
-.speed-num { font-size: 12px; text-align: right; }
+/* speed */
+.speed-row { display: grid; grid-template-columns: 1fr 36px; gap: 12px; align-items: center; }
+.speed-num { font-size: 12px; text-align: right; color: var(--text); }
 
-.saved-list { display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px; }
-.saved-item { display: flex; align-items: center; gap: 8px; padding: 10px 12px; background: var(--white); border: 1px solid var(--border); border-radius: 3px; }
+/* saved locations */
+.saved-list { display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px; min-height: 28px; }
+.saved-item {
+  display: flex; align-items: center; gap: 8px; padding: 9px 12px;
+  background: var(--white); border: 1px solid var(--border); border-radius: 3px;
+}
 .saved-item:hover { border-color: var(--border-mid); }
-.saved-name { flex: 1; font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.saved-angles { font-size: 11px; color: var(--muted); flex: 2; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.saved-name { flex: 0 0 auto; font-size: 12px; min-width: 80px; }
+.saved-angles { flex: 1; font-size: 11px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .save-row { display: flex; gap: 8px; }
 .save-row input[type="text"] { flex: 1; }
 .empty { font-size: 12px; color: var(--muted); padding: 4px 0; }
 
-.term { background: var(--white); border: 1px solid var(--border); border-radius: 3px; padding: 10px 12px; height: 180px; overflow-y: auto; display: flex; flex-direction: column; gap: 1px; scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
-.term-line { display: flex; gap: 10px; font-size: 11px; line-height: 1.8; }
+/* terminal (right column) */
+.term-col {
+  position: sticky;
+  top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.term-header {
+  display: flex; align-items: center; justify-content: space-between;
+}
+.term {
+  background: var(--white); border: 1px solid var(--border); border-radius: 3px;
+  padding: 10px 12px; height: calc(100vh - 160px); min-height: 400px;
+  overflow-y: auto; display: flex; flex-direction: column; gap: 1px;
+  scrollbar-width: thin; scrollbar-color: var(--border) transparent;
+}
+.term::-webkit-scrollbar { width: 4px; }
+.term::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+.term-line { display: flex; gap: 8px; font-size: 11px; line-height: 1.8; }
 .term-time { color: var(--muted); flex-shrink: 0; }
 .tx   .term-text { color: var(--accent); }
 .rx   .term-text { color: var(--text); }
 .err  .term-text { color: var(--danger); }
 .info .term-text { color: #1a6b3c; font-style: italic; }
 .sys  .term-text { color: var(--muted); }
+
+@media (max-width: 720px) {
+  .columns { grid-template-columns: 1fr; }
+  .term { height: 220px; min-height: unset; }
+  .term-col { position: static; }
+}
 </style>
 </head>
 <body>
-<div class="page">
+<div class="shell">
 
   <header>
     <div class="title">myPalletizer <span>260</span></div>
     <div class="status"><div class="dot" id="dot"></div><span id="connLabel">disconnected</span></div>
   </header>
 
-  <div class="section">
-    <div class="label">Connection</div>
-    <div class="row">
-      <select id="baudSelect">
-        <option value="115200" selected>115200 baud (M5)</option>
-        <option value="1000000">1000000 baud (Pi)</option>
-      </select>
-      <button class="primary" id="connectBtn" onclick="doConnect()">Connect</button>
-      <button id="disconnectBtn" onclick="doDisconnect()" disabled>Disconnect</button>
-    </div>
-  </div>
+  <div class="columns">
 
-  <hr>
+    <!-- ── LEFT COLUMN ── -->
+    <div class="left">
 
-  <div class="section">
-    <div class="label">Test</div>
-    <div class="row">
-      <button class="amber" onclick="doPing()">Ping</button>
-      <button class="amber" onclick="doGetAngles()">Read angles</button>
-      <button class="amber" onclick="doPowerOn()">Power on</button>
-    </div>
-    <div style="margin-top:8px;font-size:11px;color:var(--muted)">Ping first — any rx response means comms are working.</div>
-  </div>
-
-  <hr>
-
-  <div class="section">
-    <div class="label">Joints</div>
-    <div class="joints" id="jointGrid"></div>
-    <div style="margin-top:18px">
-      <div class="label" style="margin-bottom:10px">Speed</div>
-      <div class="speed-row">
-        <input type="range" id="speedSlider" min="1" max="100" value="30"
-          oninput="document.getElementById('speedNum').textContent=this.value">
-        <div class="speed-num" id="speedNum">30</div>
+      <!-- connection -->
+      <div class="section">
+        <div class="label">Connection</div>
+        <div class="row">
+          <select id="baudSelect">
+            <option value="115200" selected>115200 baud</option>
+            <option value="1000000">1000000 baud (Pi)</option>
+          </select>
+          <button class="primary" id="connectBtn" onclick="doConnect()">Connect</button>
+          <button id="disconnectBtn" onclick="doDisconnect()" disabled>Disconnect</button>
+          <button id="pingBtn" onclick="doPing()" disabled>Ping</button>
+        </div>
       </div>
+
+      <hr>
+
+      <!-- joints -->
+      <div class="section">
+        <div class="label">Joints</div>
+        <div class="joints" id="jointGrid"></div>
+
+        <div style="margin-top:16px">
+          <div class="label" style="margin-bottom:10px">Speed</div>
+          <div class="speed-row">
+            <input type="range" id="speedSlider" min="1" max="100" value="30"
+              oninput="document.getElementById('speedNum').textContent=this.value">
+            <div class="speed-num" id="speedNum">30</div>
+          </div>
+        </div>
+
+        <div class="row" style="margin-top:16px">
+          <button class="primary" id="sendBtn" onclick="doSend()" disabled>Send</button>
+          <button id="homeBtn" onclick="doHome()" disabled>Home</button>
+          <button id="readBtn" onclick="doGetAngles()" disabled>Read angles</button>
+          <button id="motorsOnBtn" onclick="doPowerOn()" disabled>Motors on</button>
+          <button id="motorsOffBtn" onclick="doRelease()" disabled>Motors off</button>
+        </div>
+      </div>
+
+      <hr>
+
+      <!-- saved locations -->
+      <div class="section">
+        <div class="label">Saved locations</div>
+        <div class="saved-list" id="savedList"></div>
+        <div class="save-row">
+          <input type="text" id="saveName" placeholder="location name"
+            onkeydown="if(event.key==='Enter')doSave()">
+          <button onclick="doSave()">Save current</button>
+        </div>
+      </div>
+
     </div>
-    <div class="row" style="margin-top:18px">
-      <button class="primary" id="sendBtn" onclick="doSendAngles()">Send</button>
-      <button id="homeBtn" onclick="doHome()">Home</button>
-      <button onclick="doRelease()">Release</button>
+
+    <!-- ── RIGHT COLUMN: terminal ── -->
+    <div class="term-col">
+      <div class="term-header">
+        <span class="label" style="margin-bottom:0">Terminal</span>
+        <button class="ghost" onclick="clearLog()">Clear</button>
+      </div>
+      <div class="term" id="terminal"></div>
     </div>
+
   </div>
-
-  <hr>
-
-  <div class="section">
-    <div class="label">Saved locations</div>
-    <div class="saved-list" id="savedList"></div>
-    <div class="save-row">
-      <input type="text" id="saveName" placeholder="location name" onkeydown="if(event.key==='Enter')doSave()">
-      <button onclick="doSave()">Save current</button>
-    </div>
-  </div>
-
-  <hr>
-
-  <div class="section">
-    <div class="label">Terminal</div>
-    <div class="term" id="terminal"></div>
-    <div style="margin-top:8px"><button class="ghost" onclick="clearLog()">Clear</button></div>
-  </div>
-
 </div>
+
 <script>
-// ── joints ──────────────────────────────────────────
+// ─────────────────────────────────────────
+// Joint definitions
+// ─────────────────────────────────────────
 var JOINTS = [
-  { name: 'J1', min: -150, max:  50, home: -38.9 },
-  { name: 'J2', min:  -90, max:  90, home: -57.6 },
-  { name: 'J3', min:  -90, max:  90, home:  53.3 },
-  { name: 'J4', min: -120, max:  55, home: -35.3 },
+  { name: 'J1', min: -150, max:  50,  home: -38.9 },
+  { name: 'J2', min:  -90, max:  90,  home: -57.6 },
+  { name: 'J3', min:  -90, max:  90,  home:  53.3 },
+  { name: 'J4', min: -120, max:  55,  home: -35.3 },
 ];
 
-// ── protocol ─────────────────────────────────────────
-// Frame format: 0xFE 0xFE [len] [cmd] [data...] 0xFA
-// len = cmd(1) + data.length + end(1)
-// angles encoded as signed int16 big-endian x100
+// ─────────────────────────────────────────
+// Protocol  [0xFE 0xFE len cmd data... 0xFA]
+// ─────────────────────────────────────────
+var HDR = 0xFE, TAIL = 0xFA;
+var CMD = {
+  POWER_ON:     0x10,
+  RELEASE:      0x13,
+  GET_ANGLES:   0x20,
+  SEND_ANGLES:  0x22,
+  PING:         0x12,
+};
 
-function makeFrame(cmd, data) {
-  var len = (data ? data.length : 0) + 2;
-  var arr = [0xFE, 0xFE, len, cmd];
-  if (data) { for (var i = 0; i < data.length; i++) arr.push(data[i] & 0xFF); }
-  arr.push(0xFA);
-  return new Uint8Array(arr);
+function mkFrame(cmd, data) {
+  // len = 1 (cmd) + data.length + 1 (tail)
+  var out = [HDR, HDR, data.length + 2, cmd];
+  for (var i = 0; i < data.length; i++) out.push(data[i] & 0xFF);
+  out.push(TAIL);
+  return new Uint8Array(out);
 }
 
 function degToBytes(deg) {
   var v = Math.round(parseFloat(deg) * 100);
-  if (v > 32767)  v = 32767;
-  if (v < -32768) v = -32768;
-  if (v < 0) v = v + 65536;
+  if (v < 0) v = v + 65536;          // two's complement unsigned
   return [(v >> 8) & 0xFF, v & 0xFF];
 }
 
@@ -204,145 +276,134 @@ function bytesToDeg(hi, lo) {
   return (v / 100).toFixed(1);
 }
 
-function makeMoveFrame(angles, speed) {
-  var spd = Math.round(Number(speed));
-  if (spd < 1)   spd = 1;
-  if (spd > 100) spd = 100;
+function mkSendAngles(angles, speed) {
   var data = [];
   for (var i = 0; i < 4; i++) {
     var b = degToBytes(angles[i]);
     data.push(b[0]);
     data.push(b[1]);
   }
-  data.push(spd);
-  return makeFrame(0x22, data);
+  data.push(Math.min(100, Math.max(1, Math.round(Number(speed)))));
+  return mkFrame(CMD.SEND_ANGLES, data);
 }
 
-// quick sanity check logged on page load
-(function() {
-  var f = makeMoveFrame([-38.9, -57.6, 53.3, -35.3], 30);
-  var hex = Array.from(f).map(function(b){ return b.toString(16).padStart(2,'0').toUpperCase(); }).join(' ');
-  console.log('home frame check:', hex);
-  // expected: FE FE 0B 22 F0 CE E9 80 14 D2 F2 36 1E FA
-})();
-
-// ── serial ───────────────────────────────────────────
-var _port = null, _writer = null, _reader = null, _rxBuf = new Uint8Array(0);
+// ─────────────────────────────────────────
+// Serial
+// ─────────────────────────────────────────
+var port = null, writer = null, reader = null, rxBuf = [];
 
 async function doConnect() {
-  if (!navigator.serial) { tlog('Web Serial not supported — use Chrome/Edge 89+', 'err'); return; }
+  if (!navigator.serial) { log('Web Serial not available — use Chrome or Edge 89+', 'err'); return; }
   try {
-    _port = await navigator.serial.requestPort();
+    port = await navigator.serial.requestPort();
     var baud = parseInt(document.getElementById('baudSelect').value);
-    await _port.open({ baudRate: baud });
-    _writer = _port.writable.getWriter();
-    _reader = _port.readable.getReader();
+    await port.open({ baudRate: baud });
+    writer = port.writable.getWriter();
+    reader = port.readable.getReader();
     setConn(true);
-    tlog('connected at ' + baud + ' baud', 'sys');
-    rxLoop();
+    log('connected at ' + baud + ' baud', 'sys');
+    readLoop();
   } catch(e) {
-    if (e.name !== 'NotFoundError') tlog('connect error: ' + e.message, 'err');
+    if (e.name !== 'NotFoundError') log('connect error: ' + e.message, 'err');
   }
 }
 
 async function doDisconnect() {
   try {
-    if (_reader) { await _reader.cancel(); _reader.releaseLock(); _reader = null; }
-    if (_writer) { _writer.releaseLock(); _writer = null; }
-    if (_port)   { await _port.close(); _port = null; }
-  } catch(e) { tlog('disconnect: ' + e.message, 'err'); }
-  _rxBuf = new Uint8Array(0);
+    if (reader) { await reader.cancel(); reader.releaseLock(); reader = null; }
+    if (writer) { writer.releaseLock(); writer = null; }
+    if (port)   { await port.close(); port = null; }
+  } catch(e) { log('disconnect: ' + e.message, 'err'); }
+  rxBuf = [];
   setConn(false);
-  tlog('disconnected', 'sys');
+  log('disconnected', 'sys');
 }
 
-async function rxLoop() {
-  while (_reader) {
+async function readLoop() {
+  while (reader) {
     try {
-      var r = await _reader.read();
+      var r = await reader.read();
       if (r.done) break;
-      var merged = new Uint8Array(_rxBuf.length + r.value.length);
-      merged.set(_rxBuf);
-      merged.set(r.value, _rxBuf.length);
-      _rxBuf = merged;
-      parseRx();
+      for (var i = 0; i < r.value.length; i++) rxBuf.push(r.value[i]);
+      drainBuf();
     } catch(e) {
-      if (_reader) tlog('read error: ' + e.message, 'err');
+      if (reader) log('read error: ' + e.message, 'err');
       break;
     }
   }
 }
 
-function parseRx() {
-  while (_rxBuf.length >= 4) {
-    if (_rxBuf[0] !== 0xFE || _rxBuf[1] !== 0xFE) { _rxBuf = _rxBuf.slice(1); continue; }
-    var flen = 3 + _rxBuf[2];
-    if (_rxBuf.length < flen) break;
-    var frame = _rxBuf.slice(0, flen);
-    _rxBuf = _rxBuf.slice(flen);
-    handleRx(frame);
+function drainBuf() {
+  while (rxBuf.length >= 4) {
+    if (rxBuf[0] !== HDR || rxBuf[1] !== HDR) { rxBuf.shift(); continue; }
+    var len = rxBuf[2];
+    var need = 3 + len;
+    if (rxBuf.length < need) break;
+    var frame = rxBuf.splice(0, need);
+    onFrame(frame);
   }
 }
 
-function handleRx(frame) {
-  var cmd  = frame[3];
-  var data = Array.from(frame.slice(4, frame.length - 1));
-  var hex  = Array.from(frame).map(function(b){ return b.toString(16).padStart(2,'0').toUpperCase(); }).join(' ');
-  tlog('rx  ' + hex, 'rx');
+function onFrame(frame) {
+  var hex = frame.map(function(b){ return b.toString(16).padStart(2,'0').toUpperCase(); }).join(' ');
+  log('rx  ' + hex, 'rx');
 
-  if (cmd === 0x12) {
-    tlog('→ ping: controller ' + (data[0] === 1 ? 'connected ✓' : 'not connected'), 'info');
-  } else if (cmd === 0x20 && data.length >= 8) {
+  var cmd  = frame[3];
+  var data = frame.slice(4, frame.length - 1);
+
+  if (cmd === CMD.PING) {
+    log('→ ping: ' + (data[0] === 1 ? 'controller connected ✓' : 'not connected'), 'info');
+  } else if (cmd === CMD.GET_ANGLES && data.length >= 8) {
     var a = [];
     for (var i = 0; i < 4; i++) a.push(bytesToDeg(data[i*2], data[i*2+1]));
-    tlog('→ angles: J1=' + a[0] + '° J2=' + a[1] + '° J3=' + a[2] + '° J4=' + a[3] + '°', 'info');
-    a.forEach(function(deg, i) {
-      var v = parseFloat(deg);
-      var clamped = Math.max(JOINTS[i].min, Math.min(JOINTS[i].max, v));
+    log('→ angles: J1=' + a[0] + '° J2=' + a[1] + '° J3=' + a[2] + '° J4=' + a[3] + '°', 'info');
+    a.forEach(function(val, i) {
+      var clamped = Math.max(JOINTS[i].min, Math.min(JOINTS[i].max, parseFloat(val)));
       document.getElementById('js' + i).value = clamped;
-      document.getElementById('jn' + i).value = v.toFixed(1);
+      document.getElementById('jn' + i).value = val;
     });
-  } else if (cmd === 0x10) {
-    tlog('→ power on acknowledged', 'info');
-  } else if (cmd === 0x22) {
-    tlog('→ move acknowledged', 'info');
+  } else if (cmd === CMD.POWER_ON) {
+    log('→ motors on acknowledged', 'info');
+  } else if (cmd === CMD.SEND_ANGLES) {
+    log('→ move acknowledged', 'info');
   }
 }
 
 async function tx(bytes) {
-  if (!_writer) { tlog('not connected', 'err'); return; }
+  if (!writer) { log('not connected', 'err'); return; }
   var hex = Array.from(bytes).map(function(b){ return b.toString(16).padStart(2,'0').toUpperCase(); }).join(' ');
-  tlog('tx  ' + hex, 'tx');
-  try { await _writer.write(bytes); }
-  catch(e) { tlog('write error: ' + e.message, 'err'); }
+  log('tx  ' + hex, 'tx');
+  try { await writer.write(bytes); }
+  catch(e) { log('send error: ' + e.message, 'err'); }
 }
 
-// ── commands ─────────────────────────────────────────
-function doPing()      { tx(makeFrame(0x12)); }
-function doGetAngles() { tx(makeFrame(0x20)); }
-function doPowerOn()   { tx(makeFrame(0x10)); }
-function doRelease()   { tx(makeFrame(0x13)); }
+// ─────────────────────────────────────────
+// Commands
+// ─────────────────────────────────────────
+function doPing()      { tx(mkFrame(CMD.PING, [])); }
+function doGetAngles() { tx(mkFrame(CMD.GET_ANGLES, [])); }
+function doPowerOn()   { tx(mkFrame(CMD.POWER_ON, [])); }
+function doRelease()   { tx(mkFrame(CMD.RELEASE, [])); }
 
-function doSendAngles() {
-  var spd    = parseInt(document.getElementById('speedSlider').value);
-  var angles = JOINTS.map(function(j, i) { return parseFloat(document.getElementById('jn' + i).value) || 0; });
-  tlog('sending: ' + angles.map(function(a,i){ return JOINTS[i].name+'='+a.toFixed(1)+'°'; }).join(' '), 'sys');
-  tx(makeMoveFrame(angles, spd));
+function doSend() {
+  var spd = parseInt(document.getElementById('speedSlider').value);
+  var angles = JOINTS.map(function(_, i) { return parseFloat(document.getElementById('jn' + i).value) || 0; });
+  tx(mkSendAngles(angles, spd));
 }
 
 function doHome() {
   var angles = JOINTS.map(function(j) { return j.home; });
   JOINTS.forEach(function(j, i) {
-    var clamped = Math.max(j.min, Math.min(j.max, j.home));
-    document.getElementById('js' + i).value = clamped;
-    document.getElementById('jn' + i).value = j.home.toFixed(1);
+    document.getElementById('js' + i).value = Math.max(j.min, Math.min(j.max, j.home));
+    document.getElementById('jn' + i).value = j.home;
   });
-  tlog('homing: ' + angles.map(function(a,i){ return JOINTS[i].name+'='+a+'°'; }).join(' '), 'sys');
-  tx(makeMoveFrame(angles, 30));
+  tx(mkSendAngles(angles, 30));
 }
 
-// ── joint sliders ─────────────────────────────────────
-(function buildJointUI() {
+// ─────────────────────────────────────────
+// Joint UI
+// ─────────────────────────────────────────
+(function buildJoints() {
   var grid = document.getElementById('jointGrid');
   JOINTS.forEach(function(j, i) {
     var row = document.createElement('div');
@@ -350,8 +411,7 @@ function doHome() {
 
     var lbl = document.createElement('div');
     lbl.className = 'jlabel';
-    lbl.innerHTML = '<span class="jname">' + j.name + '</span>'
-                  + '<span class="jrange">' + j.min + '° to ' + j.max + '°</span>';
+    lbl.innerHTML = '<span class="jname">' + j.name + '</span><span class="jrange">' + j.min + '° to ' + j.max + '°</span>';
 
     var sl = document.createElement('input');
     sl.type = 'range'; sl.id = 'js' + i;
@@ -363,7 +423,7 @@ function doHome() {
     var nm = document.createElement('input');
     nm.type = 'number'; nm.id = 'jn' + i;
     nm.min = j.min; nm.max = j.max; nm.step = '0.5';
-    nm.value = j.home.toFixed(1);
+    nm.value = j.home;
     var deg = document.createElement('span');
     deg.className = 'jdeg'; deg.textContent = '°';
     wrap.appendChild(nm); wrap.appendChild(deg);
@@ -372,46 +432,56 @@ function doHome() {
     grid.appendChild(row);
 
     // keep slider and number in sync
-    (function(s, n) {
-      s.addEventListener('input', function() { n.value = parseFloat(s.value).toFixed(1); });
-      n.addEventListener('input', function() {
-        var v = parseFloat(n.value);
-        if (!isNaN(v)) s.value = Math.max(j.min, Math.min(j.max, v));
-      });
-    })(sl, nm);
+    sl.addEventListener('input', function() { nm.value = parseFloat(sl.value).toFixed(1); });
+    nm.addEventListener('input', function() {
+      sl.value = Math.max(j.min, Math.min(j.max, parseFloat(nm.value) || 0));
+    });
   });
 })();
 
-// ── saved locations ────────────────────────────────────
-var STORE_KEY = 'mp260_v3';
+// ─────────────────────────────────────────
+// Saved locations
+// ─────────────────────────────────────────
+var STORE = 'mp260_v3';
 var saved = [];
-try { saved = JSON.parse(localStorage.getItem(STORE_KEY) || '[]'); } catch(_) { saved = []; }
+try { saved = JSON.parse(localStorage.getItem(STORE) || '[]'); } catch(_) { saved = []; }
 
-function persist() { localStorage.setItem(STORE_KEY, JSON.stringify(saved)); }
+function persist() { localStorage.setItem(STORE, JSON.stringify(saved)); }
 
 function renderSaved() {
   var list = document.getElementById('savedList');
   list.innerHTML = '';
-  if (!saved.length) { list.innerHTML = '<div class="empty">No saved locations yet.</div>'; return; }
+  if (!saved.length) {
+    var emp = document.createElement('div');
+    emp.className = 'empty'; emp.textContent = 'No saved locations yet.';
+    list.appendChild(emp);
+    return;
+  }
   saved.forEach(function(loc, i) {
     var item = document.createElement('div');
     item.className = 'saved-item';
 
-    var ns = document.createElement('span'); ns.className = 'saved-name'; ns.textContent = loc.name;
-    var as = document.createElement('span'); as.className = 'saved-angles';
-    as.textContent = loc.angles.map(function(a, k) {
+    var nm = document.createElement('span');
+    nm.className = 'saved-name'; nm.textContent = loc.name;
+
+    var ang = document.createElement('span');
+    ang.className = 'saved-angles';
+    ang.textContent = loc.angles.map(function(a, k) {
       return JOINTS[k].name + '=' + parseFloat(a).toFixed(1) + '°';
     }).join('  ');
 
-    var go = document.createElement('button'); go.textContent = 'Go';
-    go.setAttribute('data-i', i);
-    go.addEventListener('click', function() { doRecall(parseInt(this.getAttribute('data-i'))); });
+    var goBtn = document.createElement('button');
+    goBtn.textContent = 'Go';
+    goBtn.addEventListener('click', function() { recall(i); });
 
-    var del = document.createElement('button'); del.className = 'ghost'; del.textContent = '✕';
-    del.setAttribute('data-i', i);
-    del.addEventListener('click', function() { doDelete(parseInt(this.getAttribute('data-i'))); });
+    var delBtn = document.createElement('button');
+    delBtn.className = 'ghost'; delBtn.textContent = '✕'; delBtn.title = 'Delete';
+    delBtn.addEventListener('click', function() {
+      saved.splice(i, 1); persist(); renderSaved();
+      log('deleted "' + loc.name + '"', 'sys');
+    });
 
-    item.appendChild(ns); item.appendChild(as); item.appendChild(go); item.appendChild(del);
+    item.appendChild(nm); item.appendChild(ang); item.appendChild(goBtn); item.appendChild(delBtn);
     list.appendChild(item);
   });
 }
@@ -419,53 +489,53 @@ function renderSaved() {
 function doSave() {
   var el   = document.getElementById('saveName');
   var name = el.value.trim() || ('location ' + (saved.length + 1));
-  var angles = JOINTS.map(function(j, i) { return parseFloat(document.getElementById('jn' + i).value) || 0; });
+  var angles = JOINTS.map(function(_, i) { return parseFloat(document.getElementById('jn' + i).value) || 0; });
   var speed  = parseInt(document.getElementById('speedSlider').value);
   saved.push({ name: name, angles: angles, speed: speed });
   persist(); el.value = ''; renderSaved();
-  tlog('saved "' + name + '"', 'sys');
+  log('saved "' + name + '"', 'sys');
 }
 
-function doRecall(i) {
+function recall(i) {
   var loc = saved[i];
-  if (!loc) { tlog('location ' + i + ' not found', 'err'); return; }
-  if (!_writer) { tlog('not connected — cannot go to "' + loc.name + '"', 'err'); return; }
+  if (!loc) { log('location ' + i + ' not found', 'err'); return; }
   JOINTS.forEach(function(j, k) {
-    var clamped = Math.max(j.min, Math.min(j.max, loc.angles[k]));
-    document.getElementById('js' + k).value = clamped;
+    document.getElementById('js' + k).value = Math.max(j.min, Math.min(j.max, loc.angles[k]));
     document.getElementById('jn' + k).value = parseFloat(loc.angles[k]).toFixed(1);
   });
   document.getElementById('speedSlider').value = loc.speed;
   document.getElementById('speedNum').textContent = loc.speed;
-  tlog('recalling "' + loc.name + '": ' + loc.angles.map(function(a,k){ return JOINTS[k].name+'='+parseFloat(a).toFixed(1)+'°'; }).join(' '), 'sys');
-  tx(makeMoveFrame(loc.angles, loc.speed));
-}
-
-function doDelete(i) {
-  var name = saved[i] ? saved[i].name : '?';
-  saved.splice(i, 1);
-  persist(); renderSaved();
-  tlog('deleted "' + name + '"', 'sys');
+  log('recalling "' + loc.name + '"', 'sys');
+  tx(mkSendAngles(loc.angles, loc.speed));
 }
 
 renderSaved();
 
-// ── ui helpers ────────────────────────────────────────
+// ─────────────────────────────────────────
+// UI state
+// ─────────────────────────────────────────
 function setConn(c) {
   document.getElementById('dot').className          = 'dot' + (c ? ' live' : '');
   document.getElementById('connLabel').textContent  = c ? 'connected' : 'disconnected';
   document.getElementById('connectBtn').disabled    = c;
   document.getElementById('disconnectBtn').disabled = !c;
+  ['pingBtn','sendBtn','homeBtn','readBtn','motorsOnBtn','motorsOffBtn'].forEach(function(id) {
+    document.getElementById(id).disabled = !c;
+  });
 }
 
-function tlog(msg, type) {
+function log(msg, type) {
+  type = type || 'sys';
   var term = document.getElementById('terminal');
   var line = document.createElement('div');
-  line.className = 'term-line ' + (type || 'sys');
-  var ts = document.createElement('span'); ts.className = 'term-time'; ts.textContent = new Date().toTimeString().slice(0,8);
-  var ms = document.createElement('span'); ms.className = 'term-text'; ms.textContent = msg;
+  line.className = 'term-line ' + type;
+  var ts = document.createElement('span'); ts.className = 'term-time';
+  ts.textContent = new Date().toTimeString().slice(0,8);
+  var ms = document.createElement('span'); ms.className = 'term-text';
+  ms.textContent = msg;
   line.appendChild(ts); line.appendChild(ms);
-  term.appendChild(line); term.scrollTop = term.scrollHeight;
+  term.appendChild(line);
+  term.scrollTop = term.scrollHeight;
 }
 
 function clearLog() { document.getElementById('terminal').innerHTML = ''; }
