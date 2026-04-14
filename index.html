@@ -3,797 +3,439 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>myPalletizer 260</title>
+<title>myPalletizer 260 v1.13</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
 :root {
-  --bg: #f7f6f3;
-  --white: #ffffff;
-  --border: #e0ddd8;
-  --border-mid: #ccc9c2;
-  --text: #1a1a1a;
-  --muted: #999;
-  --accent: #1a6b3c;
-  --accent-bg: #edf5f0;
-  --danger: #c0392b;
-  --mono: 'IBM Plex Mono', monospace;
+  --bg: #f7f6f3; --white: #fff; --border: #e0ddd8; --border-mid: #ccc9c2;
+  --text: #1a1a1a; --muted: #999; --accent: #1a6b3c; --danger: #c0392b;
+  --mono: 'IBM Plex Mono', 'Courier New', monospace;
 }
+html, body { min-height: 100%; background: var(--bg); color: var(--text); font-family: var(--mono); font-size: 13px; -webkit-font-smoothing: antialiased; }
+.page { max-width: 640px; margin: 0 auto; padding: 48px 24px 80px; }
 
-html, body {
-  min-height: 100%;
-  background: var(--bg);
-  color: var(--text);
-  font-family: var(--mono);
-  font-size: 13px;
-  -webkit-font-smoothing: antialiased;
-}
-
-.page {
-  max-width: 640px;
-  margin: 0 auto;
-  padding: 48px 24px 64px;
-}
-
-/* header */
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  margin-bottom: 40px;
-}
-.title { font-size: 15px; font-weight: 500; letter-spacing: -.01em; }
+header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 40px; }
+.title { font-size: 15px; font-weight: 500; }
 .title span { color: var(--accent); }
-.status {
-  display: flex; align-items: center; gap: 7px;
-  font-size: 11px; color: var(--muted);
-}
-.dot {
-  width: 6px; height: 6px; border-radius: 50%;
-  background: var(--border-mid);
-  transition: background .3s;
-}
+.status { display: flex; align-items: center; gap: 7px; font-size: 11px; color: var(--muted); }
+.dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border-mid); transition: background .3s; }
 .dot.live { background: var(--accent); }
 
-/* sections */
 .section { margin-bottom: 36px; }
-.label {
-  font-size: 10px;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin-bottom: 14px;
-}
-
-/* connect */
+.label { font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
 .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+hr { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
 
-/* base controls */
 select, input[type="text"], input[type="number"] {
-  height: 34px;
-  border: 1px solid var(--border);
-  border-radius: 3px;
-  background: var(--white);
-  color: var(--text);
-  font-family: var(--mono);
-  font-size: 12px;
-  padding: 0 10px;
-  outline: none;
-  transition: border-color .15s;
-  -webkit-appearance: none;
+  height: 34px; border: 1px solid var(--border); border-radius: 3px; background: var(--white);
+  color: var(--text); font-family: var(--mono); font-size: 12px; padding: 0 10px;
+  outline: none; transition: border-color .15s; -webkit-appearance: none;
 }
 select:focus, input:focus { border-color: var(--accent); }
 select {
-  cursor: pointer;
-  padding-right: 26px;
+  cursor: pointer; padding-right: 26px;
   background-image: url("data:image/svg+xml,%3Csvg width='9' height='5' viewBox='0 0 9 5' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l3.5 3L8 1' stroke='%23999' stroke-width='1.2' fill='none'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 9px center;
-  background-color: var(--white);
+  background-repeat: no-repeat; background-position: right 9px center; background-color: var(--white);
 }
-
 button {
-  height: 34px; padding: 0 14px;
-  border: 1px solid var(--border);
-  border-radius: 3px;
-  background: var(--white);
-  color: var(--text);
-  font-family: var(--mono);
-  font-size: 12px;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: border-color .15s, background .15s;
+  height: 34px; padding: 0 14px; border: 1px solid var(--border); border-radius: 3px;
+  background: var(--white); color: var(--text); font-family: var(--mono); font-size: 12px;
+  cursor: pointer; white-space: nowrap; transition: border-color .15s, background .15s;
 }
 button:hover { border-color: var(--border-mid); background: var(--bg); }
 button:active { transform: scale(0.98); }
 button:disabled { opacity: .3; cursor: not-allowed; transform: none; }
-
-button.primary {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: #fff;
-}
+button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
 button.primary:hover { background: #155732; border-color: #155732; }
+button.ghost { background: transparent; border-color: transparent; color: var(--muted); padding: 0 8px; }
+button.ghost:hover { color: var(--text); }
+button.amber { background: #fffbea; border-color: #d4a017; color: #7a5800; }
+button.amber:hover { background: #fff3c4; }
 
-button.ghost {
-  background: transparent;
-  border-color: transparent;
-  color: var(--muted);
-  padding: 0 8px;
-}
-button.ghost:hover { color: var(--text); background: transparent; border-color: transparent; }
-
-/* joints */
-.joints { display: flex; flex-direction: column; gap: 12px; }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.joint {
-  display: grid;
-  grid-template-columns: 28px 1fr 80px;
-  gap: 12px;
-  align-items: center;
-}
-.jname { font-size: 11px; color: var(--muted); font-weight: 500; }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+.joints { display: flex; flex-direction: column; gap: 14px; }
+.joint { display: grid; grid-template-columns: 100px 1fr 80px; gap: 12px; align-items: center; }
+.jlabel { display: flex; flex-direction: column; gap: 1px; }
+.jname { font-size: 11px; font-weight: 500; color: var(--text); }
+.jrange { font-size: 10px; color: var(--muted); }
 
 input[type="range"] {
-  -webkit-appearance: none; appearance: none;
-  height: 1px; background: var(--border-mid);
-  border: none; padding: 0; outline: none;
-  cursor: pointer; width: 100%;
+  -webkit-appearance: none; appearance: none; height: 1px; background: var(--border-mid);
+  border: none; padding: 0; outline: none; cursor: pointer; width: 100%;
 }
 input[type="range"]::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  width: 16px; height: 16px;
-  border-radius: 50%;
-  background: var(--white);
-  border: 1.5px solid var(--accent);
-  cursor: pointer;
-  transition: transform .1s;
+  -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%;
+  background: var(--white); border: 1.5px solid var(--accent); cursor: pointer; transition: transform .1s;
 }
 input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.15); }
-input[type="range"]::-moz-range-thumb {
-  width: 16px; height: 16px; border-radius: 50%;
-  background: var(--white); border: 1.5px solid var(--accent);
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.jval {
-  display: flex; align-items: center; gap: 4px;
-  justify-content: flex-end;
-}
-.jval input[type="number"] {
-  width: 60px; text-align: right; padding: 0 6px; height: 30px;
-}
+input[type="range"]::-moz-range-thumb { width: 16px; height: 16px; border-radius: 50%; background: var(--white); border: 1.5px solid var(--accent); }
+.jval { display: flex; align-items: center; gap: 4px; justify-content: flex-end; }
+.jval input[type="number"] { width: 60px; text-align: right; padding: 0 6px; height: 30px; }
 .jdeg { font-size: 11px; color: var(--muted); }
-
-/* speed */
-.speed-row {
-  display: grid;
-  grid-template-columns: 1fr 40px;
-  gap: 12px;
-  align-items: center;
-}
+.speed-row { display: grid; grid-template-columns: 1fr 40px; gap: 12px; align-items: center; }
 .speed-num { font-size: 12px; text-align: right; }
 
-/* divider */
-hr { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
-
-/* saved locations */
-.saved-list { display: flex; flex-direction: column; gap: 6px; }
-
+.saved-list { display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px; }
 .saved-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 12px;
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: 3px;
-  transition: border-color .15s;
+  display: flex; align-items: center; gap: 8px; padding: 10px 12px;
+  background: var(--white); border: 1px solid var(--border); border-radius: 3px;
 }
 .saved-item:hover { border-color: var(--border-mid); }
-.saved-name { flex: 1; font-size: 12px; }
+.saved-name { flex: 1; font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .saved-angles { font-size: 11px; color: var(--muted); flex: 2; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-
-.save-row { display: flex; gap: 8px; margin-top: 10px; }
+.save-row { display: flex; gap: 8px; }
 .save-row input[type="text"] { flex: 1; }
+.empty { font-size: 12px; color: var(--muted); padding: 4px 0; }
 
-/* terminal */
 .term {
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: 3px;
-  padding: 10px 12px;
-  height: 160px;
-  overflow-y: auto;
+  background: var(--white); border: 1px solid var(--border); border-radius: 3px;
+  padding: 10px 12px; height: 180px; overflow-y: auto;
   display: flex; flex-direction: column; gap: 1px;
-  scrollbar-width: thin;
-  scrollbar-color: var(--border) transparent;
+  scrollbar-width: thin; scrollbar-color: var(--border) transparent;
 }
 .term-line { display: flex; gap: 10px; font-size: 11px; line-height: 1.8; }
 .term-time { color: var(--muted); flex-shrink: 0; }
-.tx .term-text { color: var(--accent); }
-.rx .term-text { color: var(--text); }
-.err .term-text { color: var(--danger); }
-.sys .term-text { color: var(--muted); }
-
-.raw-row { display: flex; gap: 8px; margin-top: 10px; }
-.raw-row input { flex: 1; }
-
-/* empty state */
-.empty { font-size: 12px; color: var(--muted); padding: 6px 0; }
+.tx   .term-text { color: var(--accent); }
+.rx   .term-text { color: var(--text); }
+.err  .term-text { color: var(--danger); }
+.info .term-text { color: #1a6b3c; font-style: italic; }
+.sys  .term-text { color: var(--muted); }
 </style>
 </head>
 <body>
 <div class="page">
 
-
   <header>
-    <div class="title">myPalletizer <span>260</span></div>
-    <div class="status">
-      <div class="dot" id="dot"></div>
-      <span id="connLabel">disconnected</span>
-    </div>
+    <div class="title">myPalletizer <span>260</span> v1.13</div>
+    <div class="status"><div class="dot" id="dot"></div><span id="connLabel">disconnected</span></div>
   </header>
 
-  <!-- connect -->
   <div class="section">
     <div class="label">Connection</div>
     <div class="row">
       <select id="baudSelect">
-        <option value="115200" selected>115200 baud</option>
-        <option value="57600">57600 baud</option>
-        <option value="9600">9600 baud</option>
+        <option value="115200" selected>115200 baud (M5)</option>
+        <option value="1000000">1000000 baud (Pi)</option>
       </select>
-      <button class="primary" id="connectBtn" onclick="connectSerial()">Connect</button>
-      <button id="disconnectBtn" onclick="disconnectSerial()" disabled>Disconnect</button>
+      <button class="primary" id="connectBtn" onclick="doConnect()">Connect</button>
+      <button id="disconnectBtn" onclick="doDisconnect()" disabled>Disconnect</button>
     </div>
   </div>
 
   <hr>
 
-  <!-- joints -->
+  <div class="section">
+    <div class="label">Test</div>
+    <div class="row">
+      <button class="amber" onclick="doPing()">Ping</button>
+      <button class="amber" onclick="doGetAngles()">Read angles</button>
+      <button class="amber" onclick="doPowerOn()">Motors on</button>
+    </div>
+    <div style="margin-top:8px;font-size:11px;color:var(--muted)">Ping first — any rx response means comms are working.</div>
+  </div>
+
+  <hr>
+
   <div class="section">
     <div class="label">Joints</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     <div class="joints" id="jointGrid"></div>
-
     <div style="margin-top:18px">
       <div class="label" style="margin-bottom:10px">Speed</div>
       <div class="speed-row">
-        <input type="range" id="speedSlider" min="1" max="100" value="50"
+        <input type="range" id="speedSlider" min="1" max="100" value="30"
           oninput="document.getElementById('speedNum').textContent=this.value">
-        <div class="speed-num" id="speedNum">50</div>
+        <div class="speed-num" id="speedNum">30</div>
       </div>
     </div>
-
     <div class="row" style="margin-top:18px">
-      <button class="primary" onclick="sendAngles()">Send</button>
-      <button onclick="goHome()">Home</button>
-      <button onclick="sendCmd('get_angles()')">Read angles</button>
-      <button onclick="sendCmd('release_all_servos()')">Release</button>
+      <button class="primary" onclick="doSendAngles()">Send</button>
+      <button onclick="doHome()">Home</button>
+      <button onclick="doRelease()">Motors off</button>
     </div>
   </div>
 
   <hr>
 
-  <!-- saved locations -->
   <div class="section">
     <div class="label">Saved locations</div>
     <div class="saved-list" id="savedList"></div>
     <div class="save-row">
-      <input type="text" id="saveName" placeholder="location name" onkeydown="if(event.key==='Enter')saveLocation()">
-
-      <button onclick="saveLocation()">Save current</button>
+      <input type="text" id="saveName" placeholder="location name"
+        onkeydown="if(event.key==='Enter')doSave()">
+      <button onclick="doSave()">Save current</button>
     </div>
   </div>
 
   <hr>
 
-  <!-- terminal -->
   <div class="section">
     <div class="label">Terminal</div>
-
-
-
     <div class="term" id="terminal"></div>
-    <div class="raw-row">
-      <input type="text" id="rawCmd" placeholder="raw command"
-        onkeydown="if(event.key==='Enter')sendRaw()">
-      <button onclick="sendRaw()">Send</button>
+    <div style="margin-top:8px">
       <button class="ghost" onclick="clearLog()">Clear</button>
     </div>
   </div>
 
 </div>
-
 <script>
-let port = null, reader = null, writer = null, readBuf = '';
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-const JOINTS = [
-  { name: 'J1', min: -165, max: 165 },
-  { name: 'J2', min: -90,  max: 90  },
-  { name: 'J3', min: -50,  max: 90  },
-  { name: 'J4', min: -165, max: 165 },
+var JOINTS = [
+  { name: 'J1', min: -150, max:  50, home: -38.9 },
+  { name: 'J2', min:  -90, max:  90, home: -57.6 },
+  { name: 'J3', min:  -90, max:  90, home:  53.3 },
+  { name: 'J4', min: -120, max:  55, home: -35.3 },
 ];
 
-// ── build joint rows ──
-const jGrid = document.getElementById('jointGrid');
-JOINTS.forEach((j, i) => {
-  const row = document.createElement('div');
-  row.className = 'joint';
-  row.innerHTML = `
-    <span class="jname">${j.name}</span>
-    <input type="range" id="js${i}" min="${j.min}" max="${j.max}" value="0" step="0.5">
-    <div class="jval">
-      <input type="number" id="jn${i}" min="${j.min}" max="${j.max}" value="0" step="0.5">
-      <span class="jdeg">°</span>
-    </div>`;
-  jGrid.appendChild(row);
+var HDR = 0xFE, END = 0xFA;
+var CMD = { POWER_ON: 0x10, IS_CTRL_CONN: 0x12, RELEASE_ALL: 0x13, GET_ANGLES: 0x20, SEND_ANGLES: 0x22 };
 
-  const slider = document.getElementById(`js${i}`);
-  const num    = document.getElementById(`jn${i}`);
-  slider.addEventListener('input', () => { num.value = parseFloat(slider.value).toFixed(1); });
-  num.addEventListener('input',    () => { slider.value = num.value; });
-});
-
-// ── saved locations (localStorage) ──
-let saved = JSON.parse(localStorage.getItem('mp260_locs') || '[]');
-
-
-
-
-
-
-
-
-
-
-
-
-
-function renderSaved() {
-  const list = document.getElementById('savedList');
-@@ -345,7 +574,8 @@
-    item.className = 'saved-item';
-    item.innerHTML = `
-      <span class="saved-name">${esc(loc.name)}</span>
-      <span class="saved-angles">${loc.angles.map(a => a.toFixed(1) + '°').join('  ')}</span>
-
-      <button onclick="recallLocation(${i})">Go</button>
-      <button class="ghost" onclick="deleteLocation(${i})" title="Delete">✕</button>`;
-    list.appendChild(item);
-@@ -354,129 +584,68 @@
-
-function saveLocation() {
-  const nameEl = document.getElementById('saveName');
-  const name = nameEl.value.trim() || `location ${saved.length + 1}`;
-  const angles = JOINTS.map((_, i) => parseFloat(document.getElementById(`jn${i}`).value || 0));
-  const speed  = parseInt(document.getElementById('speedSlider').value);
-  saved.push({ name, angles, speed });
-  localStorage.setItem('mp260_locs', JSON.stringify(saved));
-  nameEl.value = '';
-  renderSaved();
-  log(`saved "${name}"`, 'sys');
+function buildFrame(cmd, data) {
+  data = data || [];
+  return new Uint8Array([HDR, HDR, data.length + 2, cmd].concat(data).concat([END]));
 }
 
-function recallLocation(i) {
-  const loc = saved[i];
-  JOINTS.forEach((_, j) => {
-    document.getElementById(`js${j}`).value = loc.angles[j];
-    document.getElementById(`jn${j}`).value = loc.angles[j].toFixed(1);
-  });
-  document.getElementById('speedSlider').value = loc.speed;
-  document.getElementById('speedNum').textContent = loc.speed;
-  sendCmd(`send_angles([${loc.angles.join(',')}],${loc.speed})`);
-
+function degToBytes(deg) {
+  var v = Math.round(parseFloat(deg) * 100);
+  v = Math.max(-32768, Math.min(32767, v));
+  if (v < 0) v += 65536;
+  return [(v >> 8) & 0xFF, v & 0xFF];
 }
 
-function deleteLocation(i) {
-  const name = saved[i].name;
-  saved.splice(i, 1);
-  localStorage.setItem('mp260_locs', JSON.stringify(saved));
-  renderSaved();
-  log(`deleted "${name}"`, 'sys');
+function bytesToDeg(hi, lo) {
+  var v = (hi << 8) | lo;
+  if (v > 32767) v -= 65536;
+  return (v / 100).toFixed(1);
 }
 
-renderSaved();
+function buildSendAngles(angles, speed) {
+  var data = [];
+  angles.forEach(function(a) { var b = degToBytes(a); data.push(b[0], b[1]); });
+  data.push(Math.max(1, Math.min(100, Math.round(Number(speed)))));
+  return buildFrame(CMD.SEND_ANGLES, data);
+}
 
-// ── serial ──
-async function connectSerial() {
-  if (!('serial' in navigator)) {
-    log('Web Serial not available — use Chrome or Edge 89+', 'err'); return;
-  }
+var port = null, writer = null, reader = null, rxBuf = new Uint8Array(0);
+
+async function doConnect() {
+  if (!navigator.serial) { log('Web Serial not supported — use Chrome/Edge 89+', 'err'); return; }
   try {
     port = await navigator.serial.requestPort();
-    const baud = parseInt(document.getElementById('baudSelect').value);
+    var baud = parseInt(document.getElementById('baudSelect').value);
     await port.open({ baudRate: baud });
     writer = port.writable.getWriter();
     reader = port.readable.getReader();
-    setConnected(true);
-    log(`connected at ${baud} baud`, 'sys');
+    setConn(true);
+    log('connected at ' + baud + ' baud', 'sys');
     readLoop();
   } catch(e) {
-    if (e.name !== 'NotFoundError') log(`connect: ${e.message}`, 'err');
+    if (e.name !== 'NotFoundError') log('connect: ' + e.message, 'err');
   }
 }
 
-async function disconnectSerial() {
+async function doDisconnect() {
   try {
     if (reader) { await reader.cancel(); reader.releaseLock(); reader = null; }
     if (writer) { writer.releaseLock(); writer = null; }
     if (port)   { await port.close(); port = null; }
-  } catch(e) { log(`disconnect: ${e.message}`, 'err'); }
-  setConnected(false);
+  } catch(e) { log('disconnect: ' + e.message, 'err'); }
+  rxBuf = new Uint8Array(0);
+  setConn(false);
   log('disconnected', 'sys');
 }
 
 async function readLoop() {
   while (reader) {
     try {
-      const { value, done } = await reader.read();
-      if (done) break;
-      readBuf += new TextDecoder().decode(value);
-      const lines = readBuf.split('\n');
-      readBuf = lines.pop();
-      lines.forEach(l => { if (l.trim()) log(l.trim(), 'rx'); });
+      var result = await reader.read();
+      if (result.done) break;
+      var merged = new Uint8Array(rxBuf.length + result.value.length);
+      merged.set(rxBuf); merged.set(result.value, rxBuf.length);
+      rxBuf = merged;
+      drainBuf();
     } catch(e) {
-      if (reader) log(`read: ${e.message}`, 'err');
+      if (reader) log('read: ' + e.message, 'err');
       break;
     }
   }
 }
 
-async function sendCmd(cmd) {
+function drainBuf() {
+  while (rxBuf.length >= 4) {
+    if (rxBuf[0] !== HDR || rxBuf[1] !== HDR) { rxBuf = rxBuf.slice(1); continue; }
+    var len = rxBuf[2], frameLen = 3 + len;
+    if (rxBuf.length < frameLen) break;
+    var frame = rxBuf.slice(0, frameLen);
+    rxBuf = rxBuf.slice(frameLen);
+    onFrame(frame);
+  }
+}
+
+function onFrame(frame) {
+  var cmd  = frame[3];
+  var data = Array.from(frame.slice(4, frame.length - 1));
+  var hex  = Array.from(frame).map(function(b){ return b.toString(16).padStart(2,'0').toUpperCase(); }).join(' ');
+  log('rx  ' + hex, 'rx');
+  if (cmd === CMD.IS_CTRL_CONN) {
+    log('→ ping: controller ' + (data[0] === 1 ? 'connected ✓' : 'not connected'), 'info');
+  } else if (cmd === CMD.GET_ANGLES && data.length >= 8) {
+    var angles = [];
+    for (var i = 0; i < 4; i++) angles.push(bytesToDeg(data[i*2], data[i*2+1]));
+    log('→ angles: J1=' + angles[0] + '° J2=' + angles[1] + '° J3=' + angles[2] + '° J4=' + angles[3] + '°', 'info');
+    angles.forEach(function(a, i) {
+      var clamped = Math.max(JOINTS[i].min, Math.min(JOINTS[i].max, parseFloat(a)));
+      document.getElementById('js'+i).value = clamped;
+      document.getElementById('jn'+i).value = parseFloat(a).toFixed(1);
+    });
+  } else if (cmd === CMD.POWER_ON) {
+    log('→ motors on acknowledged', 'info');
+  } else if (cmd === CMD.SEND_ANGLES) {
+    log('→ move acknowledged', 'info');
+  }
+}
+
+async function sendFrame(bytes) {
   if (!writer) { log('not connected', 'err'); return; }
   try {
-    await writer.write(new TextEncoder().encode(cmd + '\r\n'));
-    log(cmd, 'tx');
-  } catch(e) { log(`send: ${e.message}`, 'err'); }
+    var hex = Array.from(bytes).map(function(b){ return b.toString(16).padStart(2,'0').toUpperCase(); }).join(' ');
+    log('tx  ' + hex, 'tx');
+    await writer.write(bytes);
+  } catch(e) { log('send: ' + e.message, 'err'); }
 }
 
-function sendRaw() {
-  const el = document.getElementById('rawCmd');
-  const v = el.value.trim();
-  if (!v) return;
-  sendCmd(v); el.value = '';
+function doPing()      { sendFrame(buildFrame(CMD.IS_CTRL_CONN)); }
+function doGetAngles() { sendFrame(buildFrame(CMD.GET_ANGLES)); }
+function doPowerOn()   { sendFrame(buildFrame(CMD.POWER_ON)); }
+function doRelease()   { sendFrame(buildFrame(CMD.RELEASE_ALL)); }
+
+function doSendAngles() {
+  var spd = parseInt(document.getElementById('speedSlider').value);
+  var angles = JOINTS.map(function(_, i) { return document.getElementById('jn'+i).value; });
+  sendFrame(buildSendAngles(angles, spd));
 }
 
-function sendAngles() {
-  const spd = document.getElementById('speedSlider').value;
-  const a = JOINTS.map((_, i) => parseFloat(document.getElementById(`jn${i}`).value || 0));
-  sendCmd(`send_angles([${a.join(',')}],${spd})`);
-}
-
-function goHome() {
-  JOINTS.forEach((_, i) => {
-    document.getElementById(`js${i}`).value = 0;
-    document.getElementById(`jn${i}`).value = '0.0';
+function doHome() {
+  var homeAngles = JOINTS.map(function(j) { return j.home; });
+  JOINTS.forEach(function(j, i) {
+    document.getElementById('js'+i).value = Math.max(j.min, Math.min(j.max, j.home));
+    document.getElementById('jn'+i).value = j.home;
   });
-  sendCmd('send_angles([0,0,0,0],30)');
+  sendFrame(buildSendAngles(homeAngles, 30));
+  log('homing: J1='+homeAngles[0]+'° J2='+homeAngles[1]+'° J3='+homeAngles[2]+'° J4='+homeAngles[3]+'°', 'sys');
 }
 
-function setConnected(c) {
-  document.getElementById('dot').className = 'dot' + (c ? ' live' : '');
-  document.getElementById('connLabel').textContent = c ? 'connected' : 'disconnected';
-  document.getElementById('connectBtn').disabled = c;
+(function() {
+  var grid = document.getElementById('jointGrid');
+  JOINTS.forEach(function(j, i) {
+    var row = document.createElement('div');
+    row.className = 'joint';
+    var label = document.createElement('div');
+    label.className = 'jlabel';
+    label.innerHTML = '<span class="jname">'+j.name+'</span><span class="jrange">'+j.min+'° to '+j.max+'°</span>';
+    var slider = document.createElement('input');
+    slider.type = 'range'; slider.id = 'js'+i;
+    slider.min = j.min; slider.max = j.max;
+    slider.value = Math.max(j.min, Math.min(j.max, j.home));
+    slider.step = '0.5';
+    var valWrap = document.createElement('div'); valWrap.className = 'jval';
+    var numInput = document.createElement('input');
+    numInput.type = 'number'; numInput.id = 'jn'+i;
+    numInput.min = j.min; numInput.max = j.max;
+    numInput.value = j.home; numInput.step = '0.5';
+    var degSpan = document.createElement('span');
+    degSpan.className = 'jdeg'; degSpan.textContent = '°';
+    valWrap.appendChild(numInput); valWrap.appendChild(degSpan);
+    row.appendChild(label); row.appendChild(slider); row.appendChild(valWrap);
+    grid.appendChild(row);
+    (function(idx, sl, nm) {
+      sl.addEventListener('input', function() { nm.value = parseFloat(sl.value).toFixed(1); });
+      nm.addEventListener('input', function() {
+        var v = parseFloat(nm.value);
+        sl.value = Math.max(JOINTS[idx].min, Math.min(JOINTS[idx].max, v));
+      });
+    })(i, slider, numInput);
+  });
+})();
+
+var STORE_KEY = 'mp260_v2';
+var saved = [];
+try { saved = JSON.parse(localStorage.getItem(STORE_KEY) || '[]'); } catch(_) { saved = []; }
+
+function persist() { localStorage.setItem(STORE_KEY, JSON.stringify(saved)); }
+
+function renderSaved() {
+  var list = document.getElementById('savedList');
+  list.innerHTML = '';
+  if (!saved.length) { list.innerHTML = '<div class="empty">No saved locations yet.</div>'; return; }
+  saved.forEach(function(loc, i) {
+    var item = document.createElement('div'); item.className = 'saved-item';
+    var nameSpan = document.createElement('span'); nameSpan.className = 'saved-name'; nameSpan.textContent = loc.name;
+    var angSpan = document.createElement('span'); angSpan.className = 'saved-angles';
+    angSpan.textContent = loc.angles.map(function(a, j) { return JOINTS[j].name+'='+parseFloat(a).toFixed(1)+'°'; }).join('  ');
+    var goBtn = document.createElement('button'); goBtn.textContent = 'Go';
+    goBtn.setAttribute('data-idx', i);
+    goBtn.addEventListener('click', function() { recallLocation(parseInt(this.getAttribute('data-idx'))); });
+    var delBtn = document.createElement('button'); delBtn.className = 'ghost'; delBtn.textContent = '✕'; delBtn.title = 'Delete';
+    delBtn.setAttribute('data-idx', i);
+    delBtn.addEventListener('click', function() { deleteLocation(parseInt(this.getAttribute('data-idx'))); });
+    item.appendChild(nameSpan); item.appendChild(angSpan); item.appendChild(goBtn); item.appendChild(delBtn);
+    list.appendChild(item);
+  });
+}
+
+function doSave() {
+  var nameEl = document.getElementById('saveName');
+  var name   = nameEl.value.trim() || ('location '+(saved.length+1));
+  var angles = JOINTS.map(function(_, i) { return parseFloat(document.getElementById('jn'+i).value)||0; });
+  var speed  = parseInt(document.getElementById('speedSlider').value);
+  saved.push({ name:name, angles:angles, speed:speed });
+  persist(); nameEl.value=''; renderSaved();
+  log('saved "'+name+'"', 'sys');
+}
+
+function recallLocation(i) {
+  var loc = saved[i];
+  if (!loc) { log('location not found','err'); return; }
+  JOINTS.forEach(function(j, k) {
+    var clamped = Math.max(j.min, Math.min(j.max, loc.angles[k]));
+    document.getElementById('js'+k).value = clamped;
+    document.getElementById('jn'+k).value = parseFloat(loc.angles[k]).toFixed(1);
+  });
+  document.getElementById('speedSlider').value = loc.speed;
+  document.getElementById('speedNum').textContent = loc.speed;
+  var data = [];
+  loc.angles.forEach(function(a) { var b = degToBytes(a); data.push(b[0], b[1]); });
+  data.push(Math.max(1, Math.min(100, Math.round(Number(loc.speed)))));
+  sendFrame(buildFrame(CMD.SEND_ANGLES, data));
+  log('recalling "'+loc.name+'"', 'sys');
+}
+
+function deleteLocation(i) {
+  var name = saved[i] ? saved[i].name : '?';
+  saved.splice(i, 1);
+  persist(); renderSaved();
+  log('deleted "'+name+'"', 'sys');
+}
+
+renderSaved();
+
+function setConn(c) {
+  document.getElementById('dot').className          = 'dot'+(c?' live':'');
+  document.getElementById('connLabel').textContent  = c ? 'connected' : 'disconnected';
+  document.getElementById('connectBtn').disabled    = c;
   document.getElementById('disconnectBtn').disabled = !c;
 }
 
-function log(msg, type = 'sys') {
-  const t = document.getElementById('terminal');
-  const line = document.createElement('div');
-  line.className = `term-line ${type}`;
-  const time = new Date().toTimeString().slice(0,8);
-  line.innerHTML = `<span class="term-time">${time}</span><span class="term-text">${esc(msg)}</span>`;
-  t.appendChild(line);
-  t.scrollTop = t.scrollHeight;
+function log(msg, type) {
+  type = type||'sys';
+  var term = document.getElementById('terminal');
+  var line = document.createElement('div'); line.className='term-line '+type;
+  var tSpan = document.createElement('span'); tSpan.className='term-time'; tSpan.textContent=new Date().toTimeString().slice(0,8);
+  var mSpan = document.createElement('span'); mSpan.className='term-text'; mSpan.textContent=msg;
+  line.appendChild(tSpan); line.appendChild(mSpan);
+  term.appendChild(line); term.scrollTop=term.scrollHeight;
 }
 
-function clearLog() { document.getElementById('terminal').innerHTML = ''; }
-function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-
-
-
-
-
-
+function clearLog() { document.getElementById('terminal').innerHTML=''; }
 </script>
 </body>
 </html>
