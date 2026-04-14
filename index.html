@@ -107,7 +107,7 @@ input[type="range"]::-moz-range-thumb { width: 16px; height: 16px; border-radius
 <div class="page">
 
   <header>
-    <div class="title">myPalletizer <span>260</span> v1.14</div>
+    <div class="title">myPalletizer <span>260</span> v1.15</div>
     <div class="status"><div class="dot" id="dot"></div><span id="connLabel">disconnected</span></div>
   </header>
 
@@ -140,6 +140,20 @@ input[type="range"]::-moz-range-thumb { width: 16px; height: 16px; border-radius
   <div class="section">
     <div class="label">Joints</div>
     <div class="joints" id="jointGrid"></div>
+    <div style="margin-top:18px">
+      <div class="label" style="margin-bottom:10px">Reach (J2 + J3 together)</div>
+      <div class="speed-row">
+        <input type="range" id="reachSlider" min="-90" max="90" value="0" step="1"
+          oninput="onReach(this.value)">
+        <div class="speed-num" id="reachNum">0</div>
+      </div>
+      <div style="margin-top:4px;font-size:10px;color:var(--muted)">moves J2 and J3 together — tune ratio below if needed</div>
+      <div class="row" style="margin-top:8px;gap:6px;font-size:11px;color:var(--muted);align-items:center">
+        J2 ratio <input type="number" id="j2ratio" value="1" step="0.1" style="width:52px;height:28px;font-size:11px">
+        &nbsp; J3 ratio <input type="number" id="j3ratio" value="-1" step="0.1" style="width:52px;height:28px;font-size:11px">
+      </div>
+    </div>
+
     <div style="margin-top:18px">
       <div class="label" style="margin-bottom:10px">Speed</div>
       <div class="speed-row">
@@ -306,6 +320,19 @@ function doPing()      { sendFrame(buildFrame(CMD.IS_CTRL_CONN)); }
 function doGetAngles() { sendFrame(buildFrame(CMD.GET_ANGLES)); }
 function doPowerOn()   { sendFrame(buildFrame(CMD.POWER_ON)); }
 function doRelease()   { sendFrame(buildFrame(CMD.RELEASE_ALL)); }
+
+function onReach(val) {
+  val = parseFloat(val);
+  document.getElementById('reachNum').textContent = val;
+  var j2r = parseFloat(document.getElementById('j2ratio').value) || 1;
+  var j3r = parseFloat(document.getElementById('j3ratio').value) || -1;
+  var j2 = Math.max(JOINTS[1].min, Math.min(JOINTS[1].max, val * j2r));
+  var j3 = Math.max(JOINTS[2].min, Math.min(JOINTS[2].max, val * j3r));
+  document.getElementById('js1').value = j2;
+  document.getElementById('jn1').value = j2.toFixed(1);
+  document.getElementById('js2').value = j3;
+  document.getElementById('jn2').value = j3.toFixed(1);
+}
 
 function doSendAngles() {
   var spd = parseInt(document.getElementById('speedSlider').value);
