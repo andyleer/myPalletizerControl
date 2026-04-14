@@ -14,25 +14,19 @@
   --mono: 'IBM Plex Mono', 'Courier New', monospace;
 }
 html, body { min-height: 100%; background: var(--bg); color: var(--text); font-family: var(--mono); font-size: 13px; -webkit-font-smoothing: antialiased; }
+.page { max-width: 640px; margin: 0 auto; padding: 48px 24px 80px; }
 
-.shell { max-width: 1100px; margin: 0 auto; padding: 40px 24px 80px; }
-
-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 32px; }
+header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 40px; }
 .title { font-size: 15px; font-weight: 500; }
 .title span { color: var(--accent); }
-.title .ver { font-weight: 400; color: var(--muted); margin-left: 6px; }
 .status { display: flex; align-items: center; gap: 7px; font-size: 11px; color: var(--muted); }
 .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border-mid); transition: background .3s; }
 .dot.live { background: var(--accent); }
 
-/* two-column */
-.columns { display: grid; grid-template-columns: 1fr 340px; gap: 32px; align-items: start; }
-@media (max-width: 760px) { .columns { grid-template-columns: 1fr; } .term { height: 220px !important; min-height: unset !important; } .term-col { position: static !important; } }
-
-.section { margin-bottom: 28px; }
-.label { font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+.section { margin-bottom: 36px; }
+.label { font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
 .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
-hr { border: none; border-top: 1px solid var(--border); margin: 22px 0; }
+hr { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
 
 select, input[type="text"], input[type="number"] {
   height: 34px; border: 1px solid var(--border); border-radius: 3px; background: var(--white);
@@ -57,6 +51,8 @@ button.primary { background: var(--accent); border-color: var(--accent); color: 
 button.primary:hover { background: #155732; border-color: #155732; }
 button.ghost { background: transparent; border-color: transparent; color: var(--muted); padding: 0 8px; }
 button.ghost:hover { color: var(--text); }
+button.amber { background: #fffbea; border-color: #d4a017; color: #7a5800; }
+button.amber:hover { background: #fff3c4; }
 
 .joints { display: flex; flex-direction: column; gap: 14px; }
 .joint { display: grid; grid-template-columns: 100px 1fr 80px; gap: 12px; align-items: center; }
@@ -81,7 +77,10 @@ input[type="range"]::-moz-range-thumb { width: 16px; height: 16px; border-radius
 .speed-num { font-size: 12px; text-align: right; }
 
 .saved-list { display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px; }
-.saved-item { display: flex; align-items: center; gap: 8px; padding: 10px 12px; background: var(--white); border: 1px solid var(--border); border-radius: 3px; }
+.saved-item {
+  display: flex; align-items: center; gap: 8px; padding: 10px 12px;
+  background: var(--white); border: 1px solid var(--border); border-radius: 3px;
+}
 .saved-item:hover { border-color: var(--border-mid); }
 .saved-name { flex: 1; font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .saved-angles { font-size: 11px; color: var(--muted); flex: 2; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -89,13 +88,10 @@ input[type="range"]::-moz-range-thumb { width: 16px; height: 16px; border-radius
 .save-row input[type="text"] { flex: 1; }
 .empty { font-size: 12px; color: var(--muted); padding: 4px 0; }
 
-/* terminal column */
-.term-col { position: sticky; top: 24px; display: flex; flex-direction: column; gap: 8px; }
-.term-header { display: flex; align-items: center; justify-content: space-between; }
 .term {
   background: var(--white); border: 1px solid var(--border); border-radius: 3px;
-  padding: 10px 12px; height: calc(100vh - 160px); min-height: 400px;
-  overflow-y: auto; display: flex; flex-direction: column; gap: 1px;
+  padding: 10px 12px; height: 180px; overflow-y: auto;
+  display: flex; flex-direction: column; gap: 1px;
   scrollbar-width: thin; scrollbar-color: var(--border) transparent;
 }
 .term-line { display: flex; gap: 10px; font-size: 11px; line-height: 1.8; }
@@ -108,82 +104,81 @@ input[type="range"]::-moz-range-thumb { width: 16px; height: 16px; border-radius
 </style>
 </head>
 <body>
-<div class="shell">
+<div class="page">
 
   <header>
-    <div class="title">myPalletizer <span>260</span><span class="ver">v1.13</span></div>
+    <div class="title">myPalletizer <span>260</span> v1.13</div>
     <div class="status"><div class="dot" id="dot"></div><span id="connLabel">disconnected</span></div>
   </header>
 
-  <div class="columns">
-
-    <!-- LEFT COLUMN -->
-    <div>
-
-      <div class="section">
-        <div class="label">Connection</div>
-        <div class="row">
-          <select id="baudSelect">
-            <option value="115200" selected>115200 baud (M5)</option>
-            <option value="1000000">1000000 baud (Pi)</option>
-          </select>
-          <button class="primary" id="connectBtn" onclick="doConnect()">Connect</button>
-          <button id="disconnectBtn" onclick="doDisconnect()" disabled>Disconnect</button>
-          <button onclick="doPing()">Ping</button>
-        </div>
-      </div>
-
-      <hr>
-
-      <div class="section">
-        <div class="label">Joints</div>
-        <div class="joints" id="jointGrid"></div>
-        <div style="margin-top:18px">
-          <div class="label" style="margin-bottom:10px">Speed</div>
-          <div class="speed-row">
-            <input type="range" id="speedSlider" min="1" max="100" value="30"
-              oninput="document.getElementById('speedNum').textContent=this.value">
-            <div class="speed-num" id="speedNum">30</div>
-          </div>
-        </div>
-        <div class="row" style="margin-top:18px">
-          <button class="primary" onclick="doSendAngles()">Send</button>
-          <button onclick="doHome()">Home</button>
-          <button onclick="doGetAngles()">Read angles</button>
-          <button onclick="doPowerOn()">Motors on</button>
-          <button onclick="doRelease()">Motors off</button>
-        </div>
-      </div>
-
-      <hr>
-
-      <div class="section">
-        <div class="label">Saved locations</div>
-        <div class="saved-list" id="savedList"></div>
-        <div class="save-row">
-          <input type="text" id="saveName" placeholder="location name" onkeydown="if(event.key==='Enter')doSave()">
-          <button onclick="doSave()">Save current</button>
-        </div>
-      </div>
-
+  <div class="section">
+    <div class="label">Connection</div>
+    <div class="row">
+      <select id="baudSelect">
+        <option value="115200" selected>115200 baud (M5)</option>
+        <option value="1000000">1000000 baud (Pi)</option>
+      </select>
+      <button class="primary" id="connectBtn" onclick="doConnect()">Connect</button>
+      <button id="disconnectBtn" onclick="doDisconnect()" disabled>Disconnect</button>
     </div>
-
-    <!-- RIGHT COLUMN: terminal -->
-    <div class="term-col">
-      <div class="term-header">
-        <span class="label" style="margin-bottom:0">Terminal</span>
-        <button class="ghost" onclick="clearLog()">Clear</button>
-      </div>
-      <div class="term" id="terminal"></div>
-    </div>
-
   </div>
-</div>
 
+  <hr>
+
+  <div class="section">
+    <div class="label">Test</div>
+    <div class="row">
+      <button class="amber" onclick="doPing()">Ping</button>
+      <button class="amber" onclick="doGetAngles()">Read angles</button>
+      <button class="amber" onclick="doPowerOn()">Motors on</button>
+    </div>
+    <div style="margin-top:8px;font-size:11px;color:var(--muted)">Ping first — any rx response means comms are working.</div>
+  </div>
+
+  <hr>
+
+  <div class="section">
+    <div class="label">Joints</div>
+    <div class="joints" id="jointGrid"></div>
+    <div style="margin-top:18px">
+      <div class="label" style="margin-bottom:10px">Speed</div>
+      <div class="speed-row">
+        <input type="range" id="speedSlider" min="1" max="100" value="30"
+          oninput="document.getElementById('speedNum').textContent=this.value">
+        <div class="speed-num" id="speedNum">30</div>
+      </div>
+    </div>
+    <div class="row" style="margin-top:18px">
+      <button class="primary" onclick="doSendAngles()">Send</button>
+      <button onclick="doHome()">Home</button>
+      <button onclick="doRelease()">Motors off</button>
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="section">
+    <div class="label">Saved locations</div>
+    <div class="saved-list" id="savedList"></div>
+    <div class="save-row">
+      <input type="text" id="saveName" placeholder="location name"
+        onkeydown="if(event.key==='Enter')doSave()">
+      <button onclick="doSave()">Save current</button>
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="section">
+    <div class="label">Terminal</div>
+    <div class="term" id="terminal"></div>
+    <div style="margin-top:8px">
+      <button class="ghost" onclick="clearLog()">Clear</button>
+    </div>
+  </div>
+
+</div>
 <script>
-// ─────────────────────────────────────────
-// Joint definitions  (home from Read angles 22:34:14)
-// ─────────────────────────────────────────
 var JOINTS = [
   { name: 'J1', min: -150, max:  50, home: -38.9 },
   { name: 'J2', min:  -90, max:  90, home: -57.6 },
@@ -191,9 +186,6 @@ var JOINTS = [
   { name: 'J4', min: -120, max:  55, home: -35.3 },
 ];
 
-// ─────────────────────────────────────────
-// Protocol  (WORKING — do not modify)
-// ─────────────────────────────────────────
 var HDR = 0xFE, END = 0xFA;
 var CMD = { POWER_ON: 0x10, IS_CTRL_CONN: 0x12, RELEASE_ALL: 0x13, GET_ANGLES: 0x20, SEND_ANGLES: 0x22 };
 
@@ -222,9 +214,6 @@ function buildSendAngles(angles, speed) {
   return buildFrame(CMD.SEND_ANGLES, data);
 }
 
-// ─────────────────────────────────────────
-// Serial
-// ─────────────────────────────────────────
 var port = null, writer = null, reader = null, rxBuf = new Uint8Array(0);
 
 async function doConnect() {
@@ -313,9 +302,6 @@ async function sendFrame(bytes) {
   } catch(e) { log('send: ' + e.message, 'err'); }
 }
 
-// ─────────────────────────────────────────
-// Commands
-// ─────────────────────────────────────────
 function doPing()      { sendFrame(buildFrame(CMD.IS_CTRL_CONN)); }
 function doGetAngles() { sendFrame(buildFrame(CMD.GET_ANGLES)); }
 function doPowerOn()   { sendFrame(buildFrame(CMD.POWER_ON)); }
@@ -324,7 +310,6 @@ function doRelease()   { sendFrame(buildFrame(CMD.RELEASE_ALL)); }
 function doSendAngles() {
   var spd = parseInt(document.getElementById('speedSlider').value);
   var angles = JOINTS.map(function(_, i) { return document.getElementById('jn'+i).value; });
-  log('sending: J1='+angles[0]+'° J2='+angles[1]+'° J3='+angles[2]+'° J4='+angles[3]+'°', 'sys');
   sendFrame(buildSendAngles(angles, spd));
 }
 
@@ -334,29 +319,23 @@ function doHome() {
     document.getElementById('js'+i).value = Math.max(j.min, Math.min(j.max, j.home));
     document.getElementById('jn'+i).value = j.home;
   });
-  log('homing: J1='+homeAngles[0]+'° J2='+homeAngles[1]+'° J3='+homeAngles[2]+'° J4='+homeAngles[3]+'°', 'sys');
   sendFrame(buildSendAngles(homeAngles, 30));
+  log('homing: J1='+homeAngles[0]+'° J2='+homeAngles[1]+'° J3='+homeAngles[2]+'° J4='+homeAngles[3]+'°', 'sys');
 }
 
-// ─────────────────────────────────────────
-// Joint UI
-// ─────────────────────────────────────────
 (function() {
   var grid = document.getElementById('jointGrid');
   JOINTS.forEach(function(j, i) {
     var row = document.createElement('div');
     row.className = 'joint';
-
     var label = document.createElement('div');
     label.className = 'jlabel';
     label.innerHTML = '<span class="jname">'+j.name+'</span><span class="jrange">'+j.min+'° to '+j.max+'°</span>';
-
     var slider = document.createElement('input');
     slider.type = 'range'; slider.id = 'js'+i;
     slider.min = j.min; slider.max = j.max;
     slider.value = Math.max(j.min, Math.min(j.max, j.home));
     slider.step = '0.5';
-
     var valWrap = document.createElement('div'); valWrap.className = 'jval';
     var numInput = document.createElement('input');
     numInput.type = 'number'; numInput.id = 'jn'+i;
@@ -365,22 +344,18 @@ function doHome() {
     var degSpan = document.createElement('span');
     degSpan.className = 'jdeg'; degSpan.textContent = '°';
     valWrap.appendChild(numInput); valWrap.appendChild(degSpan);
-
     row.appendChild(label); row.appendChild(slider); row.appendChild(valWrap);
     grid.appendChild(row);
-
     (function(idx, sl, nm) {
       sl.addEventListener('input', function() { nm.value = parseFloat(sl.value).toFixed(1); });
       nm.addEventListener('input', function() {
-        sl.value = Math.max(JOINTS[idx].min, Math.min(JOINTS[idx].max, parseFloat(nm.value)));
+        var v = parseFloat(nm.value);
+        sl.value = Math.max(JOINTS[idx].min, Math.min(JOINTS[idx].max, v));
       });
     })(i, slider, numInput);
   });
 })();
 
-// ─────────────────────────────────────────
-// Saved Locations
-// ─────────────────────────────────────────
 var STORE_KEY = 'mp260_v2';
 var saved = [];
 try { saved = JSON.parse(localStorage.getItem(STORE_KEY) || '[]'); } catch(_) { saved = []; }
@@ -393,26 +368,15 @@ function renderSaved() {
   if (!saved.length) { list.innerHTML = '<div class="empty">No saved locations yet.</div>'; return; }
   saved.forEach(function(loc, i) {
     var item = document.createElement('div'); item.className = 'saved-item';
-
-    var nameSpan = document.createElement('span');
-    nameSpan.className = 'saved-name'; nameSpan.textContent = loc.name;
-
-    var angSpan = document.createElement('span');
-    angSpan.className = 'saved-angles';
-    angSpan.textContent = loc.angles.map(function(a, j) {
-      return JOINTS[j].name+'='+parseFloat(a).toFixed(1)+'°';
-    }).join('  ');
-
-    var goBtn = document.createElement('button');
-    goBtn.textContent = 'Go';
+    var nameSpan = document.createElement('span'); nameSpan.className = 'saved-name'; nameSpan.textContent = loc.name;
+    var angSpan = document.createElement('span'); angSpan.className = 'saved-angles';
+    angSpan.textContent = loc.angles.map(function(a, j) { return JOINTS[j].name+'='+parseFloat(a).toFixed(1)+'°'; }).join('  ');
+    var goBtn = document.createElement('button'); goBtn.textContent = 'Go';
     goBtn.setAttribute('data-idx', i);
     goBtn.addEventListener('click', function() { recallLocation(parseInt(this.getAttribute('data-idx'))); });
-
-    var delBtn = document.createElement('button');
-    delBtn.className = 'ghost'; delBtn.textContent = '✕'; delBtn.title = 'Delete';
+    var delBtn = document.createElement('button'); delBtn.className = 'ghost'; delBtn.textContent = '✕'; delBtn.title = 'Delete';
     delBtn.setAttribute('data-idx', i);
     delBtn.addEventListener('click', function() { deleteLocation(parseInt(this.getAttribute('data-idx'))); });
-
     item.appendChild(nameSpan); item.appendChild(angSpan); item.appendChild(goBtn); item.appendChild(delBtn);
     list.appendChild(item);
   });
@@ -432,7 +396,8 @@ function recallLocation(i) {
   var loc = saved[i];
   if (!loc) { log('location not found','err'); return; }
   JOINTS.forEach(function(j, k) {
-    document.getElementById('js'+k).value = Math.max(j.min, Math.min(j.max, loc.angles[k]));
+    var clamped = Math.max(j.min, Math.min(j.max, loc.angles[k]));
+    document.getElementById('js'+k).value = clamped;
     document.getElementById('jn'+k).value = parseFloat(loc.angles[k]).toFixed(1);
   });
   document.getElementById('speedSlider').value = loc.speed;
@@ -453,9 +418,6 @@ function deleteLocation(i) {
 
 renderSaved();
 
-// ─────────────────────────────────────────
-// UI helpers
-// ─────────────────────────────────────────
 function setConn(c) {
   document.getElementById('dot').className          = 'dot'+(c?' live':'');
   document.getElementById('connLabel').textContent  = c ? 'connected' : 'disconnected';
@@ -466,7 +428,7 @@ function setConn(c) {
 function log(msg, type) {
   type = type||'sys';
   var term = document.getElementById('terminal');
-  var line = document.createElement('div'); line.className = 'term-line '+type;
+  var line = document.createElement('div'); line.className='term-line '+type;
   var tSpan = document.createElement('span'); tSpan.className='term-time'; tSpan.textContent=new Date().toTimeString().slice(0,8);
   var mSpan = document.createElement('span'); mSpan.className='term-text'; mSpan.textContent=msg;
   line.appendChild(tSpan); line.appendChild(mSpan);
